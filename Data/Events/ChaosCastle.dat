@@ -1,0 +1,66 @@
+//############################################################
+//# -- X6 MUONLINE SERVER EMULATOR
+//# -- www.igcn.mu
+//# -- www.muemu.pl
+//# -- (C) 2017 IGC-Network | MUEMU (R)
+//# ----------------------------------------------------------
+//# -- File is a part of MUEMU MuOnline Server files.
+//############################################################
+
+// For More Settings about Chaos Castle refer to '\IGCData\Events\IGC_ChaosCastle.ini'
+
+// -- Chaos Castle time settings ----------------------------------
+// ================================================================
+// Time will    | Event(Min) | Time to close after the weapon
+// be open(Min) | Duration   | is delivered to the Archangel(min)
+// ================================================================
+// ----------------------------------------------------------------
+0 // DO NOT REMOVE SECTION NUMBER
+		5				10					1
+end
+
+// -- Configuration and range to drop items disappear -----------
+// ==============================================================
+// Item drop rate       |  Exc Item        |  Time for Items
+// (gItemDropPer(10)/n) |  Drop Rate(1/n)  |  to disappear
+// ==============================================================
+// --------------------------------------------------------------
+1 // DO NOT REMOVE SECTION NUMBER
+		100					1200					0
+end
+
+// -- Start Hours ---
+// ==================
+// Hour		Minute
+// ==================
+// ------------------
+2 // DO NOT REMOVE SECTION NUMBER
+	1		0
+	3		0
+	5		0
+	7		0
+	9		0
+	11		0
+	13		0
+	15		0
+	17		0
+	19		0
+	21		0
+	23		0
+end
+
+
+// -- Reward Experience Multiplier ---------
+// =========================================
+// [Castle Level]	Experience	Description
+// =========================================
+// -----------------------------------------
+4 // DO NOT REMOVE SECTION NUMBER
+	0				1.0		// Chaos Castle 1
+	1				1.0		// Chaos Castle 2
+	2				1.0		// Chaos Castle 3
+	3				1.0		// Chaos Castle 4
+	4				1.0		// Chaos Castle 5
+	5				1.0		// Chaos Castle 6
+	6				1.0		// Chaos Castle 7
+end

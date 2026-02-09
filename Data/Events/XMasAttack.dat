@@ -1,0 +1,70 @@
+//############################################################
+//# -- X6 MUONLINE SERVER EMULATOR
+//# -- www.igcn.mu
+//# -- www.muemu.pl
+//# -- (C) 2017 IGC-Network | MUEMU (R)
+//# ----------------------------------------------------------
+//# -- File is a part of MUEMU MuOnline Server files.
+//############################################################
+
+// -- Timing Settings (Minutes) -------
+// ====================================
+//	OpenTime	PlayTime	CloseTime
+// ====================================
+// ------------------------------------
+0
+	3			10			5
+end
+
+// -- Radius Settings -----------------
+// ====================================
+// RandomSize	RadiusMin	RadiusMax
+// ====================================
+// ------------------------------------
+1
+	15			3			6
+end
+
+
+// MonsterID		- monster index from \Data\Monster\Settings\MonsterList.xml
+// is Respawning	- does monster respawn after killing it, values: 0/1
+// isAttackingFirst	- does monster attack first or keeps the walk until you player hits him, values: 0/1
+
+// ================================================================================
+//	MonsterID			isRespawning		isAttackingFirst	Description
+// ================================================================================
+// --------------------------------------------------------------------------------
+2
+	476					0					1					// Cursed Santa
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+	466					0					1					// Cursed Goblin
+end
+
+
+// -- AttackEvent StartTime --
+// ===========================
+// Hour	[24]	Min [0-59]
+// ===========================
+// ---------------------------
+3
+	1		20
+	3		20
+	5		20
+	7		20
+	9		20
+	11		20
+	13		20
+	15		20
+	17		20
+	19		20
+	21		20
+	23		20
+end

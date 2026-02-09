@@ -1,0 +1,84 @@
+//############################################################
+//# -- X6 MUONLINE SERVER EMULATOR
+//# -- www.igcn.mu
+//# -- www.muemu.pl
+//# -- (C) 2017 IGC-Network | MUEMU (R)
+//# ----------------------------------------------------------
+//# -- File is a part of MUEMU MuOnline Server files.
+//############################################################
+
+// -- Blood Castle time settings ----------------------------------
+// ================================================================
+// Time will    | Event(Min) | Time to close after the weapon
+// be open(Min) | Duration   | is delivered to the Archangel(min)
+// ================================================================
+// ----------------------------------------------------------------
+0 // DO NOT REMOVE SECTION NUMBER
+	5					15						1
+end
+
+
+// -- Configuration and range to drop items disappear -----------
+// ==============================================================
+// Item drop rate       |  Exc Item        |  Time for Items
+// (gItemDropPer(10)/n) |  Drop Rate(1/n)  |  to disappear
+// ==============================================================
+// --------------------------------------------------------------
+1 // DO NOT REMOVE SECTION NUMBER
+	1000				1200					1
+end
+
+
+// -- Castle Gates Health -----------------------
+// ==============================================
+// BC  |  Statue | Gates | Description
+// Lvl |  HP     | HP    |
+// ==============================================
+// ----------------------------------------------
+2 // DO NOT REMOVE SECTION NUMBER
+	0	65000	150000		// Blood Castle 1
+	1	105000	205000		// Blood Castle 2
+	2	145000	260000		// Blood Castle 3
+	3	185000	325000		// Blood Castle 4
+	4	225000	400000		// Blood Castle 5
+	5	265000	480000		// Blood Castle 6
+	6	305000	565000		// Blood Castle 7
+	7	345000	665000		// Blood Castle 8
+end
+
+// -- Experience Multiplier ----------------
+// =========================================
+// [Castle Level]	Experience	Description
+// =========================================
+// -----------------------------------------
+3 // DO NOT REMOVE SECTION NUMBER
+	0				1.0		// Blood Castle 1
+	1				1.0		// Blood Castle 2
+	2				1.0		// Blood Castle 3
+	3				1.0		// Blood Castle 4
+	4				1.0		// Blood Castle 5
+	5				1.0		// Blood Castle 6
+	6				1.0		// Blood Castle 7
+	7				1.0		// Blood Castle 8
+end
+
+// -- Start Hours ---
+// ==================
+// Hour		Minute
+// ==================
+// ------------------
+4 // DO NOT REMOVE SECTION NUMBER
+	0		30
+	2		30
+	4		30
+	6		30
+	8		30
+	10		30
+	12		30
+	14		30
+	16		00
+//	16		30
+	18		30
+	20		30
+	22		30
+end

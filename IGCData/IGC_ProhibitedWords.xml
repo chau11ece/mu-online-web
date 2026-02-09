@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+// ============================================================
+// == X6 MUONLINE SERVER EMULATOR
+// == www.igcn.mu
+// == www.muemu.pl
+// == (C) 2017 IGC-Network | MUEMU (R)
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// == File is a part of MUEMU MuOnline Server files.
+// ============================================================
+//
+// ### ProhobitedWords::Restrict ###
+//	Word: a word to restrict from entire Game Play chatting
+//
+// ~ IMPORTANT ~ File must be saved with UTF-8 Without BOM encoding, one word per line (without any spaces)
+//
+// STRICTLY NO COMMENTS INSIDE TAGS
+-->
+
+<ProhibitedWords>
+	<Restrict Word="fuck" />
+</ProhibitedWords>

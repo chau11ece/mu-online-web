@@ -1,0 +1,82 @@
+//############################################################
+//# -- X6 MUONLINE SERVER EMULATOR
+//# -- www.igcn.mu
+//# -- www.muemu.pl
+//# -- (C) 2017 IGC-Network | MUEMU (R)
+//# ----------------------------------------------------------
+//# -- File is a part of MUEMU MuOnline Server files.
+//############################################################
+
+// -- Time Settings ---------------------------------------------
+// ==============================================================
+// Event Start (Min)	Event Duration (Min)	Close Time(Min)
+// ==============================================================
+// --------------------------------------------------------------
+0
+	3					30						25
+end
+
+// -- Radius Settings --------------------------
+// =============================================
+// Random Size		RadiusMin		RadiusMax
+// =============================================
+// ---------------------------------------------
+1
+	15				3				6
+end
+
+// MonsterID		- monster index from \Data\Monster\Settings\MonsterList.xml
+// is Respawning	- does monster respawn after killing it, values: 0/1
+// isAttackingFirst	- does monster attack first or keeps the walk until you player hits him, values: 0/1
+
+// -- Monster Settings ------------------------------------------------------------------------
+// ============================================================================================
+// MonsterID		isRespawning			isAttackingFirst	Description
+// ============================================================================================
+// --------------------------------------------------------------------------------------------
+2
+	135					0					1					// White Wizard
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	136					0					0					// Destructive Ogre Soldier
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+	137					0					1					// Destructive Ogre Archer
+end
+
+// -- Event Schedules ----------------------
+//==========================================
+// Hours (Format: 24:00)	Minutes (0-59)
+//==========================================
+// -----------------------------------------
+3
+	2						0
+	14						0
+	18						0
+	22						0
+end
+

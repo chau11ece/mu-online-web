@@ -1,0 +1,10 @@
+########################################################
+################## Game Server Types ###################
+########################################################
+
+1) GameServer_R - Regular Game server for Common Game Play
+2) GameServer_C - Siege Server, handles Castle Siege Event
+Extra
+3) GameServer_U - Universal GameServer have normal + CS, 2 to 1
+
+When use GameServer_U u need extra config in IGC_MapServerInfo.xml and use MonsterSetBase_CS file to all monster

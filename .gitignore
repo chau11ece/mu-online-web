@@ -1,0 +1,51 @@
+# Ignore log files and directories
+*.log
+LOG/
+GENS_RANKING_LOG/
+SQL_LOG/
+DataServer/LOG/
+DataServer/GENS_RANKING_LOG/
+DataServer/SQL_LOG/
+ConnectServer/LOG/
+GameServerRegular/ANTI_HACK/
+GameServerRegular/CHAR_SAVE_LOG/
+GameServerRegular/COMMANDS_SAVE_LOG/
+GameServerRegular/GM_LOG/
+GameServerRegular/ITEM_SHOP_LOG/
+GameServerRegular/Log/
+GameServerRegular/SERIAL_CHECK_LOG/
+GameServerRegular/SERVER_CONN_STATE_LOG/
+GameServerRegular/TRADE_LOG/
+GameServerSiege/ANTI_HACK/
+GameServerSiege/CHAR_SAVE_LOG/
+GameServerSiege/COMMANDS_SAVE_LOG/
+GameServerSiege/GM_LOG/
+GameServerSiege/ITEM_SHOP_LOG/
+GameServerSiege/Log/
+GameServerSiege/SERIAL_CHECK_LOG/
+GameServerSiege/SERVER_CONN_STATE_LOG/
+GameServerSiege/TRADE_LOG/
+MHPServer/LOG/
+StartUp/Logs/
+
+# Ignore executables and DLLs
+*.exe
+*.dll
+
+# Ignore backup files
+*.bak
+
+# Ignore installer files
+*.msi
+*.exe (for installers like SQLEXPRADV_x64_ENU.exe)
+
+# Ignore zip files
+*.zip
+
+# Ignore temporary or test files
+test-db/
+php.zip
+
+# Ignore sensitive or large data files if not needed
+# Data/  # Uncomment if you want to ignore data files
+# IGCData/  # Uncomment if you want to ignore IGC data

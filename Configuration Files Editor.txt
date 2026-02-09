@@ -1,0 +1,5 @@
+For easier reading and configuring ".XML", ".INI" files, use professional text editor.
+
+Recommended notepad++ :
+
+https://notepad-plus-plus.org/
