@@ -37,14 +37,12 @@ StartUp/Logs/
 
 # Ignore installer files
 *.msi
-*.exe (for installers like SQLEXPRADV_x64_ENU.exe)
 
 # Ignore zip files
 *.zip
 
 # Ignore temporary or test files
 test-db/
-php.zip
 
 # Ignore sensitive or large data files if not needed
 # Data/  # Uncomment if you want to ignore data files

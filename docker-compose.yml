@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  mu-sqlserver:
+    build: ./DB
+    container_name: mu-sqlserver
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:C:/SQLData
+    healthcheck:
+      test: ["CMD", "powershell", "-Command", "try { Invoke-Sqlcmd -Query 'SELECT 1' -ServerInstance 'localhost' -Username 'sa' -Password 'Abcd@1234!' -ErrorAction Stop; exit 0 } catch { exit 1 }"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    networks:
+      - mu-network
+
+  mu-ds:
+    build: ./DataServer
+    container_name: mu-ds
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      mu-sqlserver:
+        condition: service_healthy
+    volumes:
+      - ./Data:C:/Data
+      - ./IGCData:C:/IGCData
+    networks:
+      - mu-network
+
+  mu-cs:
+    build: ./ConnectServer
+    container_name: mu-cs
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      - mu-ds
+    ports:
+      - "44405:44405"
+      - "55667:55667/udp"
+    networks:
+      - mu-network
+
+  mu-gs:
+    build: ./GameServerRegular
+    container_name: mu-gs
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      - mu-ds
+      - mu-cs
+    ports:
+      - "56900:56900"
+    volumes:
+      - ./Data:/mu/Data
+      - ./IGCData:/mu/IGCData
+    networks:
+      - mu-network
+
+  mu-gs-cs:
+    build: ./GameServerSiege
+    container_name: mu-gs-cs
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      - mu-ds
+      - mu-cs
+    ports:
+      - "56914:56914"
+    volumes:
+      - ./Data:/mu/Data
+      - ./IGCData:/mu/IGCData
+    networks:
+      - mu-network
+
+  mu-web:
+    build: ./Web
+    container_name: mu-web
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      mu-sqlserver:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    networks:
+      - mu-network
+
+volumes:
+  sqldata:
+    name: mu-sqldata
+
+networks:
+  mu-network:
+    driver: nat
