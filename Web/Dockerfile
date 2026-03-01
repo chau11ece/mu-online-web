@@ -14,6 +14,9 @@ COPY php/ C:/php/
 # 4. Copy Web files
 COPY . C:/inetpub/wwwroot/
 
+# 5. Copy start script
+COPY start.ps1 C:/start.ps1
+
 WORKDIR C:/inetpub/wwwroot
 EXPOSE 80
-CMD ["C:\\php\\php.exe", "-c", "C:\\php\\php.ini", "-S", "0.0.0.0:80", "-t", "C:\\inetpub\\wwwroot"]
+CMD ["powershell", "-Command", "C:/start.ps1"]

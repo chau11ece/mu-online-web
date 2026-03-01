@@ -9,12 +9,12 @@ if (basename(__FILE__) == basename($_SERVER['PHP_SELF'])) {
 // ================================================================================================
 // SQL Server Connection Settings
 // ================================================================================================
-$sql_host = 'mu-sqlserver';     // Docker container name
+$sql_host = '192.168.100.96';        // SQL Server (Docker mode: 10.10.0.2 | overridden by SQL_SERVER env in local mode)
 $sql_user = 'sa';               // SQL user
-$sql_pass = 'Abcd@1234!';       // Your SQL password
+$sql_pass = 'Abcd@1234';        // Your SQL password
 $database = 'MuOnline';         // Database name
 
-$option['web_address']        = "http://192.168.100.96:8082"; 
+$option['web_address']        = "http://192.168.100.96"; 
 $option['has_dl']             = 0;
 $option['md5']                = 0;
 $option['debug']              = 1; // 1=Show Errors / 0=Hidden

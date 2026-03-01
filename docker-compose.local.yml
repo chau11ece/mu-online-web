@@ -1,0 +1,78 @@
+# docker-compose.local.yml — Local SQL Server mode
+# Usage: docker-compose -f docker-compose.local.yml up -d --build
+#
+# Runs all game services in Docker but connects to the Windows host SQL Server 2022
+# (192.168.1.3) instead of a SQL container.
+#
+# The SQL_SERVER env var is read by start.ps1 wrappers in mu-ds and mu-web to
+# patch their respective config files before launching the service.
+
+services:
+  mu-ds:
+    build: ./DataServer
+    container_name: mu-ds
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+      - SQL_SERVER=192.168.1.3
+    ports:
+      - "55960:55960"
+    volumes:
+      - ./GameServerRegular:C:/GameServerRegular
+      - ./Data:C:/Data
+      - ./IGCData:C:/IGCData
+
+  mu-cs:
+    build: ./ConnectServer
+    container_name: mu-cs
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      mu-ds:
+        condition: service_started
+    ports:
+      - "44405:44405/tcp"
+      - "44405:44405/udp"
+      - "55667:55667/udp"
+      - "55667:55667/tcp"
+
+  mu-web:
+    build: ./Web
+    container_name: mu-web
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+      - SQL_SERVER=192.168.100.96,1433
+    ports:
+      - "8080:80"
+
+  mu-gs-regular:
+    build: ./GameServerRegular
+    container_name: mu-gs-regular
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      mu-ds:
+        condition: service_started
+    ports:
+      - "55901:55901"
+    volumes:
+      - ./Data:C:/mu/Data
+      - ./IGCData:C:/mu/IGCData
+
+  mu-gs-siege:
+    build: ./GameServerSiege
+    container_name: mu-gs-siege
+    env_file: .env
+    environment:
+      - PUBLIC_IP=${PUBLIC_IP}
+    depends_on:
+      mu-ds:
+        condition: service_started
+    ports:
+      - "55919:55919"
+    volumes:
+      - ./Data:C:/mu/Data
+      - ./IGCData:C:/mu/IGCData

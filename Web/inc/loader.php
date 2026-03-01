@@ -29,6 +29,7 @@
 	$active_pages['topmg'] = 'rankings/rank-mg.php';
 	$active_pages['topbk'] = 'rankings/rank-bk.php';
 	$active_pages['topsm'] = 'rankings/rank-sm.php';
+	$active_pages['generate_test_chars'] = 'generate_test_chars.php';
 
     //End
 

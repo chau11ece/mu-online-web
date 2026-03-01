@@ -19,7 +19,7 @@
 -->
 
 <AllowedIPList>
-    <IP Address="127.0.0.1" />
+    <IP Address="192.168.100.96" />
     <IP Address="172.17.0.0/16" />
     <IP Address="172.18.0.0/16" />
     <IP Address="172.19.0.0/16" />

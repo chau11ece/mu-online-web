@@ -22,6 +22,18 @@
 -->
 
 <ServerList>
-	<Server Code="0"  IP="mu-gs" Port="55901" Visible="1" Name="Regular" />
-	<Server Code="14" IP="mu-gs-cs" Port="55919" Visible="1" Name="Siege" />
+	<!-- ═══ DaNang (Public) ═══ -->
+	<Server Code="0"  IP="192.168.100.96" Port="55901" Visible="1" Name="DaNang_Pub0_Normal" />
+	<Server Code="1"  IP="192.168.100.96" Port="55902" Visible="1" Name="DaNang_Pub1_Normal" />
+	<Server Code="2"  IP="192.168.100.96" Port="55903" Visible="1" Name="DaNang_Pub2_VIP" />
+	<Server Code="3"  IP="192.168.100.96" Port="55904" Visible="1" Name="DaNang_Pub3_NonPvP" />
+	<Server Code="14" IP="192.168.100.96" Port="55919" Visible="1" Name="DaNang_Pub_Siege" />
+
+	<!-- ═══ DaNang (Private) Group 1 ═══ -->
+	<Server Code="20" IP="192.168.100.96" Port="55920" Visible="1" Name="DaNang_Prv1A_Normal" />
+	<Server Code="21" IP="192.168.100.96" Port="55921" Visible="1" Name="DaNang_Prv1B_Normal" />
+
+	<!-- ═══ DaNang (Private) Group 2 ═══ -->
+	<Server Code="40" IP="192.168.100.96" Port="55940" Visible="1" Name="DaNang_Prv2A_Normal" />
+	<Server Code="41" IP="192.168.100.96" Port="55941" Visible="1" Name="DaNang_Prv2B_Normal" />
 </ServerList>

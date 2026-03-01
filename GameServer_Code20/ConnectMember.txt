@@ -1,0 +1,6 @@
+// ConnectMember.txt — Whitelisted accounts for this private server
+// Add one account ID per line (max 10 chars each)
+// Lines starting with // are comments
+// Example:
+// myaccount1
+// storeacc01

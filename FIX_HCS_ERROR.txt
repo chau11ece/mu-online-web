@@ -1,0 +1,16 @@
+# HCS Scratch Size Error Fix
+# Run these commands in PowerShell as Administrator:
+
+# 1. Set registry key for scratch size
+$scratchSizePath = "HKLM:\SYSTEM\CurrentControlSet\Services\docker\Parameters"
+if (-not (Test-Path $scratchSizePath)) {
+    New-Item -Path $scratchSizePath -Force | Out-Null
+}
+Set-ItemProperty -Path $scratchSizePath -Name "DefaultScratchSize" -Value 67108864 -Type DWord -Force
+
+# 2. Restart Docker service
+Restart-Service docker -Force
+
+# 3. Try building again
+docker compose build --no-cache mu-sqlserver
+docker compose up -d mu-sqlserver

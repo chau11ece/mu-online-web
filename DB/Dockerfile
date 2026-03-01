@@ -17,7 +17,7 @@ COPY start.ps1 C:/start.ps1
 ADD https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLEXPRADV_x64_ENU.exe C:/SQLInstall/
 
 # Install SQL Server 2019 silently [cite: 1, 2]
-RUN Start-Process C:/SQLInstall/SQLEXPRADV_x64_ENU.exe -ArgumentList '/Q', '/ACTION=INSTALL', '/FEATURES=SQLENGINE', '/INSTANCENAME=MSSQLSERVER', '/SECURITYMODE=SQL', '/SAPWD=\"Abcd@1234!\"', '/SQLSVCACCOUNT=\"NT AUTHORITY\System\"', '/AGTSVCACCOUNT=\"NT AUTHORITY\System\"', '/SQLSYSADMINACCOUNTS=\"BUILTIN\Administrators\"', '/IACCEPTSQLSERVERLICENSETERMS', '/TCPENABLED=1', '/UPDATEENABLED=False' -Wait
+RUN Start-Process C:/SQLInstall/SQLEXPRADV_x64_ENU.exe -ArgumentList '/Q', '/ACTION=INSTALL', '/FEATURES=SQLENGINE', '/INSTANCENAME=MSSQLSERVER', '/SECURITYMODE=SQL', '/SAPWD=\"Abcd@1234\"', '/SQLSVCACCOUNT=\"NT AUTHORITY\System\"', '/AGTSVCACCOUNT=\"NT AUTHORITY\System\"', '/SQLSYSADMINACCOUNTS=\"BUILTIN\Administrators\"', '/IACCEPTSQLSERVERLICENSETERMS', '/TCPENABLED=1', '/UPDATEENABLED=False' -Wait
 
 # Update SQL Server to store data in C:\SQLData for persistence [cite: 1]
 RUN Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQLServer' -Name 'DefaultData' -Value 'C:\SQLData'; \

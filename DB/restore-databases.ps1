@@ -6,15 +6,18 @@ $timeout = 300
 $timer = 0
 do {
     try {
-        Invoke-Sqlcmd -Query "SELECT 1" -ServerInstance "localhost" -Username "sa" -Password "Abcd@1234!" -ErrorAction Stop
-        Write-Host "SQL Server is ready"
-        break
+        & 'C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE' -S localhost -U sa -P "Abcd@1234" -Q "SELECT 1" -b
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "SQL Server is ready"
+            break
+        }
     }
     catch {
-        Write-Host "Waiting for SQL Server... ($timer seconds)"
-        Start-Sleep 5
-        $timer += 5
+        # Ignore errors
     }
+    Write-Host "Waiting for SQL Server... ($timer seconds)"
+    Start-Sleep 5
+    $timer += 5
 } while ($timer -lt $timeout)
 
 if ($timer -ge $timeout) {
@@ -25,6 +28,7 @@ if ($timer -ge $timeout) {
 # Restore databases from SQL scripts
 $databases = @(
     @{Name="MuOnline"; Script="C:/SQLScripts/MuOnline/MuOnline.sql"},
+    @{Name="Me_MuOnline"; Script="C:/SQLScripts/Me_MuOnline/Me_MuOnline.sql"},
     @{Name="Events"; Script="C:/SQLScripts/Ranking and Events/Events.sql"},
     @{Name="Ranking"; Script="C:/SQLScripts/Ranking and Events/Ranking.sql"}
 )
@@ -32,18 +36,26 @@ $databases = @(
 foreach ($db in $databases) {
     try {
         Write-Host "Restoring database: $($db.Name)"
-        
+
         # Check if database exists
-        $exists = Invoke-Sqlcmd -Query "SELECT name FROM sys.databases WHERE name = '$($db.Name)'" -ServerInstance "localhost" -Username "sa" -Password "Abcd@1234!"
-        
-        if ($exists) {
+        & 'C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE' -S localhost -U sa -P "Abcd@1234" -Q "SELECT 1 FROM sys.databases WHERE name = '$($db.Name)'" -b
+        if ($LASTEXITCODE -eq 0) {
             Write-Host "Database $($db.Name) already exists, skipping..."
             continue
         }
-        
+
+        # Create the database first
+        & 'C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE' -S localhost -U sa -P "Abcd@1234" -Q "CREATE DATABASE [$($db.Name)]" -b
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create database $($db.Name)"
+        }
+
         # Execute SQL script
         if (Test-Path $db.Script) {
-            Invoke-Sqlcmd -InputFile $db.Script -ServerInstance "localhost" -Username "sa" -Password "Abcd@1234!" -QueryTimeout 0
+            & 'C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE' -S localhost -U sa -P "Abcd@1234" -i $db.Script -b
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to execute script for $($db.Name)"
+            }
             Write-Host "Successfully restored: $($db.Name)"
         } else {
             Write-Warning "Script not found: $($db.Script)"
@@ -58,8 +70,12 @@ foreach ($db in $databases) {
 if (Test-Path "C:/SQLExtras/Triggers/Summoner_RagrFighter_Creation.sql") {
     try {
         Write-Host "Applying additional triggers..."
-        Invoke-Sqlcmd -InputFile "C:/SQLExtras/Triggers/Summoner_RagrFighter_Creation.sql" -ServerInstance "localhost" -Username "sa" -Password "Abcd@1234!"
-        Write-Host "Triggers applied successfully"
+        & 'C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE' -S localhost -U sa -P "Abcd@1234" -i "C:/SQLExtras/Triggers/Summoner_RagrFighter_Creation.sql" -b
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "Triggers applied successfully"
+        } else {
+            Write-Warning "Failed to apply triggers"
+        }
     }
     catch {
         Write-Warning "Failed to apply triggers: $($_.Exception.Message)"

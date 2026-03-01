@@ -1,6 +1,13 @@
 <?php
-$serverName = "mu-sqlserver"; 
-$connectionInfo = array( "Database"=>"MuOnline", "UID"=>"sa", "PWD"=>"Abcd@1234!", "TrustServerCertificate"=>true);
+// Test SQL Connection - Using same settings as config.php
+$serverName = "192.168.1.252\MSSQLSERVER01"; 
+$connectionInfo = array( 
+    "Database"=>"MuOnline", 
+    "UID"=>"sa", 
+    "PWD"=>"Abcd@1234", 
+    "TrustServerCertificate"=>true,
+    "Encrypt"=>0
+);
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 
 if( $conn ) {
