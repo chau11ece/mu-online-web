@@ -47,3 +47,53 @@ test-db/
 # Ignore sensitive or large data files if not needed
 # Data/  # Uncomment if you want to ignore data files
 # IGCData/  # Uncomment if you want to ignore IGC data
+
+
+
+# ==================== Sensitive & Credentials ====================
+.env
+*.pem
+*.key
+sa_password.txt
+secrets.*
+
+# ==================== Docker & Containers ====================
+docker-compose.override.yml
+*.log
+logs/
+logs-copy/
+
+# ==================== Database Backups ====================
+*.bak
+*.bck
+*.sql.bak
+Backup/
+*.trn
+
+# ==================== Windows / Visual Studio ====================
+*.suo
+*.user
+*.sdf
+*.opensdf
+*.cache
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==================== Large / Unnecessary folders ====================
+DataServer/LOG/
+ConnectServer/LOG/
+GameServerRegular/Log/
+GameServerSiege/Log/
+GENS_RANKING_LOG/
+SQL_LOG/
+LOG/
+*.zip
+*.rar
+php.zip
+
+# ==================== Temporary ====================
+*.tmp
+*.temp
+temp/
+Temp/
