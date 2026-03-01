@@ -1,0 +1,28 @@
+name: MU Online CI Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show repository structure
+        run: ls -la
+
+      - name: Check Docker files
+        run: |
+          echo "Dockerfile exists:"
+          ls -la Web/Dockerfile || echo "Not found"
+          echo "docker-compose exists:"
+          ls -la docker-compose.yml || echo "Not found"
+
+      - name: Hello from MU Online CI
+        run: echo "🎉 MU Online CI Pipeline is working!"
