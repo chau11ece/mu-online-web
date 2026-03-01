@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # 1. Install VC++ Redist
 ADD https://aka.ms/vs/17/release/vc_redist.x64.exe C:/vc_redist.x64.exe
