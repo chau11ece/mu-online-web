@@ -1,6 +1,7 @@
 name: Build mu-web Docker Image
 
 on:
+  workflow_dispatch:          # ← Add this
   push:
     branches: [ main, develop ]
     paths:

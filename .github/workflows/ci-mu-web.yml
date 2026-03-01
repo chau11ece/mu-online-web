@@ -1,6 +1,7 @@
 name: CI - Build mu-web (Windows Container)
 
 on:
+  workflow_dispatch:          # ← Add this
   push:
     branches: [ main, develop ]
     paths:
@@ -13,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, windows]   # ← Uses your VPS runner
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
