@@ -19,4 +19,13 @@ COPY start.ps1 C:/start.ps1
 
 WORKDIR C:/inetpub/wwwroot
 EXPOSE 80
+
+# ── EXERCISE 1: Health check ──────────────────────────────────────────────────
+# Docker will call this every 30s
+# --start-period=60s gives IIS time to fully start before first check
+# If it fails 3 times in a row → container is marked "unhealthy"
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD powershell -Command \
+    "try { $r = Invoke-WebRequest -Uri 'http://localhost/health.php' -UseBasicParsing; if ($r.StatusCode -eq 200) { exit 0 } else { exit 1 } } catch { exit 1 }"
+
 CMD ["powershell", "-Command", "C:/start.ps1"]
