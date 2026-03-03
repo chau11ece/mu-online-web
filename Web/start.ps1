@@ -16,8 +16,21 @@ if ($env:SQL_SERVER) {
     Write-Host "config.php patched successfully."
 }
 
+# Verify PHP binary exists before trying to start it
+Write-Host "Checking PHP binary at C:\php\php.exe ..."
+if (-not (Test-Path "C:\php\php.exe")) {
+    Write-Error "C:\php\php.exe not found - PHP directory was not copied into the image!"
+    exit 1
+}
+Write-Host "PHP binary found. Version:"
+& "C:\php\php.exe" --version
+
 Write-Host "Starting PHP built-in server on 0.0.0.0:80..."
 
-# Run PHP in the foreground — this keeps the container alive.
-# The script (and therefore the container) exits only if PHP itself exits.
+# Run PHP in the foreground — keeps the container alive until PHP exits.
 & "C:\php\php.exe" -c "C:\php\php.ini" -S "0.0.0.0:80" -t "C:\inetpub\wwwroot"
+
+# If PHP exits, log the exit code and propagate it so Docker knows the container failed.
+$code = $LASTEXITCODE
+Write-Host "PHP server exited with code: $code"
+exit $code
