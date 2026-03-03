@@ -1,0 +1,10 @@
+# Override root .dockerignore to allow PHP executables
+# The root .dockerignore excludes **/*.exe which removes PHP binaries
+
+# Allow these directories (even though they contain .exe files)
+!php/
+
+# But exclude unnecessary files from other directories
+.git/
+*.log
+*.tmp

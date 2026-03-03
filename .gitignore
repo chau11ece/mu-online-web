@@ -97,3 +97,4 @@ php.zip
 *.temp
 temp/
 Temp/
+.claude/settings.local.json
