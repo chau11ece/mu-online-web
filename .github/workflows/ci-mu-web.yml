@@ -72,7 +72,7 @@ jobs:
             Write-Error "Container exited (state=$state) — see startup logs above"
             exit 1
           }
-          Write-Host "✅ Container is running"
+          Write-Host "SUCCESS: Container is running"
 
       # Poll localhost:8089 (the mapped port) — Windows containers are NOT reachable
       # via their internal NAT IP from the host; always use the mapped port instead.
@@ -86,7 +86,7 @@ jobs:
             try {
               $r = Invoke-WebRequest -Uri "http://localhost:8089/health.php" -UseBasicParsing -TimeoutSec 5
               if ($r.StatusCode -eq 200) {
-                Write-Host "✅ IIS ready after ${elapsed}s"
+                Write-Host "IIS ready after ${elapsed}s"
                 exit 0
               }
             } catch { }
@@ -105,7 +105,7 @@ jobs:
             Write-Error "health.php returned $($response.StatusCode), expected 200"
             exit 1
           }
-          Write-Host "✅ health.php responded with 200"
+          Write-Host "health.php responded with 200"
 
       # ── Test 2: response body says status ok ────────────────────────────
       - name: Test health response body is ok
@@ -117,11 +117,11 @@ jobs:
             Write-Error "Expected status=ok, got: $($json.status)"
             Write-Host "Failed checks:"
             $json.checks.PSObject.Properties | Where-Object { $_.Value -like "failed*" } | ForEach-Object {
-              Write-Host "  ❌ $($_.Name): $($_.Value)"
+              Write-Host "$($_.Name): $($_.Value)"
             }
             exit 1
           }
-          Write-Host "✅ All checks passed"
+          Write-Host "All checks passed"
 
       # ── Test 3: PHP version is present in response ───────────────────────
       - name: Test PHP version is reported
@@ -132,7 +132,7 @@ jobs:
             Write-Error "PHP version missing from health response"
             exit 1
           }
-          Write-Host "✅ PHP version: $($json.php)"
+          Write-Host "PHP version: $($json.php)"
 
       # ── Test 4: homepage loads (port 80 → IIS works at all) ─────────────
       - name: Test homepage responds
@@ -142,7 +142,7 @@ jobs:
             Write-Error "Homepage returned $($response.StatusCode)"
             exit 1
           }
-          Write-Host "✅ Homepage responded with 200"
+          Write-Host "Homepage responded with 200"
 
       # ── Always clean up the test container ──────────────────────────────
       - name: Cleanup test container
@@ -174,5 +174,5 @@ jobs:
         run: docker image prune -f
 
       - name: Notify success
-        run: Write-Host "✅ mu-web pushed to GHCR successfully!"
+        run: Write-Host "mu-web pushed to GHCR successfully!"
         
