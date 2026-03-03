@@ -65,11 +65,11 @@ jobs:
           Start-Sleep -Seconds 5
           $state = docker inspect -f '{{.State.Status}}' mu-web-test
           Write-Host "Container state: $state"
-          Write-Host "=== Container startup logs ==="
+          Write-Host "--- Container startup logs ---"
           docker logs mu-web-test
-          Write-Host "=== End startup logs ==="
+          Write-Host "--- End startup logs ---"
           if ($state -ne "running") {
-            Write-Error "Container exited (state=$state) — see startup logs above"
+            Write-Host "ERROR: Container exited with state: $state"
             exit 1
           }
           Write-Host "SUCCESS: Container is running"
