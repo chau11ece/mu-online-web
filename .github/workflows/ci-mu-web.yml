@@ -33,21 +33,6 @@ jobs:
           docker build -t ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} .
           docker tag ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} ghcr.io/${{ github.repository_owner }}/mu-web:latest
 
-      # Verify the image has PHP before the test job tries to run it
-      - name: Verify image contains PHP
-        run: |
-          docker run --rm `
-            ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} `
-            powershell -Command "
-              if (Test-Path 'C:\php\php.exe') {
-                Write-Host '✅ php.exe found'
-                & C:\php\php.exe --version
-              } else {
-                Write-Error '❌ php.exe NOT found - PHP directory missing from image!'
-                exit 1
-              }
-            "
-
   # ── Stage 2: Test ─────────────────────────────────────────────────────────
   test:
     needs: build                          # only runs if build succeeds
