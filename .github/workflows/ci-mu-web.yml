@@ -28,8 +28,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build mu-web Docker image
+        working-directory: ./Web
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} -f ./Web/Dockerfile ./Web
+          docker build -t ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} .
           docker tag ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }} ghcr.io/${{ github.repository_owner }}/mu-web:latest
 
       # Verify the image has PHP before the test job tries to run it
