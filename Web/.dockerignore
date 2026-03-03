@@ -1,14 +1,4 @@
-# Exclude binary/archive files to reduce build context size
-**/*.exe
-**/*.bak
-**/*.zip
-**/*.rar
-
-# PHP executables are required — re-include the entire php/ directory
-!php/
-!php/**
-
-# General exclusions
+# Files not needed in the Docker image
 .git/
 *.log
 *.tmp
