@@ -16,18 +16,8 @@ if ($env:SQL_SERVER) {
     Write-Host "config.php patched successfully."
 }
 
-Write-Host "Starting PHP server..."
+Write-Host "Starting PHP built-in server on 0.0.0.0:80..."
 
-Start-Process "C:\php\php.exe" -ArgumentList "-c", "C:\php\php.ini", "-S", "0.0.0.0:80", "-t", "C:\inetpub\wwwroot" -NoNewWindow
-
-Write-Host "PHP server started. Keeping container running..."
-
-while ($true) {
-    Start-Sleep 60
-    # Optional: Check if PHP is still running
-    $phpProcess = Get-Process php -ErrorAction SilentlyContinue
-    if (-not $phpProcess) {
-        Write-Error "PHP server stopped unexpectedly. Exiting."
-        exit 1
-    }
-}
+# Run PHP in the foreground — this keeps the container alive.
+# The script (and therefore the container) exits only if PHP itself exits.
+& "C:\php\php.exe" -c "C:\php\php.ini" -S "0.0.0.0:80" -t "C:\inetpub\wwwroot"
