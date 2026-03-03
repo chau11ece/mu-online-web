@@ -58,36 +58,40 @@ jobs:
             -e "DB_PASS=Abcd@1234" `
             ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }}
 
-      # Poll until health.php responds (IIS can take 60-120s in a Windows container)
+      # Verify the container didn't immediately crash before we start waiting
+      - name: Verify container is running
+        run: |
+          Start-Sleep -Seconds 5
+          $state = docker inspect -f '{{.State.Status}}' mu-web-test
+          Write-Host "Container state: $state"
+          if ($state -ne "running") {
+            Write-Error "Container exited immediately (state=$state). Dumping logs:"
+            docker logs mu-web-test
+            exit 1
+          }
+          Write-Host "✅ Container is running"
+
+      # Poll localhost:8089 (the mapped port) — Windows containers are NOT reachable
+      # via their internal NAT IP from the host; always use the mapped port instead.
       - name: Wait for IIS to be ready
         run: |
-          # 1. Get the internal IP of the container
-          $containerIp = docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mu-web-test
-          Write-Host "Container Internal IP: $containerIp"
-
-          $maxWait  = 300   # Increased to 5 minutes for Windows/IIS
+          $maxWait  = 180   # seconds
           $interval = 10
           $elapsed  = 0
-          
-          Write-Host "Waiting for IIS at http://$($containerIp)/health.php..."
-          
+          Write-Host "Waiting for IIS at http://localhost:8089/health.php (up to ${maxWait}s)..."
           while ($elapsed -lt $maxWait) {
             try {
-              # Use the Internal IP and internal port 80
-              $r = Invoke-WebRequest -Uri "http://$($containerIp)/health.php" -UseBasicParsing -TimeoutSec 5
+              $r = Invoke-WebRequest -Uri "http://localhost:8089/health.php" -UseBasicParsing -TimeoutSec 5
               if ($r.StatusCode -eq 200) {
                 Write-Host "✅ IIS ready after ${elapsed}s"
                 exit 0
               }
-            } catch {
-              # Optional: print the error for deeper debugging
-              # Write-Host "  Error: $($_.Exception.Message)"
-            }
+            } catch { }
             Start-Sleep -Seconds $interval
             $elapsed += $interval
             Write-Host "  Still waiting... (${elapsed}s elapsed)"
           }
-          Write-Error "IIS did not respond at http://$($containerIp)/health.php within ${maxWait}s"
+          Write-Error "IIS did not respond within ${maxWait}s"
           exit 1
 
       # ── Test 1: health.php returns 200 ──────────────────────────────────
