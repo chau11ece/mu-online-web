@@ -1,6 +1,7 @@
 name: CI - Build mu-web (Windows Container)
 
 on:
+  workflow_dispatch:        # allows manual trigger from GitHub Actions UI
   push:
     branches: [ main, develop ]
     paths:
