@@ -45,7 +45,12 @@ jobs:
     steps:
       # Remove any leftover container from a previous failed run
       - name: Pre-cleanup stale test container
-        run: docker rm -f mu-web-test 2>$null; $true
+        run: |
+          try {
+            docker rm -f mu-web-test
+          } catch {
+            Write-Host "No stale container found, skipping cleanup."
+          }
 
       - name: Start mu-web container
         run: |
