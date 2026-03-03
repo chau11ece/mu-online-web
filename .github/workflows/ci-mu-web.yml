@@ -46,7 +46,7 @@ jobs:
         run: |
           docker run -d `
             --name mu-web-test `
-            -p 8099:80 `
+            -p 8080:80 `
             ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }}
 
       # IIS + PHP inside a Windows container takes ~30-60s to fully start
