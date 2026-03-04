@@ -1,18 +1,10 @@
 name: CI - MU Online with docker-compose (Windows Runner)
 
 on:
-  workflow_dispatch:                    # Allows manual run
-  push:
-    branches: [ main, develop ]
-    paths:
-      - 'Web/**'
-      - 'docker-compose.yml'
-      - 'Web/Dockerfile'
-  pull_request:
-    branches: [ main, develop ]
-    paths:
-      - 'Web/**'
-      - 'docker-compose.yml'
+    push:
+      branches: [ main, develop ]
+    pull_request:
+      branches: [ main ]
 
 jobs:
   validate:
