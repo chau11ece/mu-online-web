@@ -1,0 +1,92 @@
+name: CI - MU Online with docker-compose (Windows Runner)
+
+on:
+  workflow_dispatch:                    # Allows manual run
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'Web/**'
+      - 'docker-compose.yml'
+      - 'Web/Dockerfile'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'Web/**'
+      - 'docker-compose.yml'
+
+jobs:
+  validate:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate docker-compose.yml
+        run: docker-compose config
+
+      - name: Check Dockerfile exists
+        run: |
+          if (!(Test-Path "Web/Dockerfile")) { 
+            Write-Error "Dockerfile not found!"; exit 1 
+          }
+          Write-Host "✅ Dockerfile found"
+
+  build:
+    needs: validate
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build all services with docker-compose
+        run: docker-compose build --no-cache mu-web   # Only build mu-web for now
+
+      - name: Tag image for GHCR
+        run: |
+          docker tag mu-project-mu-web:latest ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }}
+          docker tag mu-project-mu-web:latest ghcr.io/${{ github.repository_owner }}/mu-web:latest
+
+  test:
+    needs: build
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start services
+        run: docker-compose up -d mu-web
+
+      - name: Wait for web to be ready
+        run: Start-Sleep -Seconds 15
+
+      - name: Test web server is responding
+        run: |
+          $response = Invoke-WebRequest -Uri "http://localhost:8082" -UseBasicParsing -TimeoutSec 10
+          if ($response.StatusCode -eq 200) { 
+            Write-Host "✅ Web server is running!" 
+          } else { 
+            Write-Error "Web server failed to respond"; exit 1 
+          }
+
+      - name: Show logs
+        run: docker-compose logs mu-web --tail=20
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down
+
+  push:
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/mu-web:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/mu-web:latest
