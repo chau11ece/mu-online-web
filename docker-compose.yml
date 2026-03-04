@@ -6,23 +6,7 @@ services:
     env_file: .env
     environment:
       - PUBLIC_IP=${PUBLIC_IP}
-    depends_on:
-      mu-sqlserver:
-        condition: service_healthy
+      - SQL_SERVER=192.168.100.96,1433
     ports:
-      - "80:80"
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.5
-        
-volumes:
-  sqldata:
-    name: mu-sqldata
-
-networks:
-  mu-network:
-    driver: nat
-    ipam:
-      config:
-        - subnet: 10.10.0.0/24
-          gateway: 10.10.0.1
+      - "8080:80"
+      
