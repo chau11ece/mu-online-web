@@ -1,62 +1,4 @@
 services:
-  mu-sqlserver:
-    build: ./DB
-    container_name: mu-sqlserver
-    env_file: .env
-    environment:
-      - PUBLIC_IP=${PUBLIC_IP}
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqldata:C:/SQLData
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.2
-    healthcheck:
-      # docker-compose does environment-variable interpolation on `$...`,
-      # so PowerShell `$false` must be escaped as `$$false`.
-      test: ["CMD", "powershell", "-Command", "try { Test-NetConnection localhost -Port 1433 -WarningAction SilentlyContinue | Select-Object -ExpandProperty TcpTestSucceeded } catch { $$false }"]
-      interval: 15s
-      timeout: 30s
-      retries: 30
-      start_period: 60s
-
-  mu-ds:
-    build: ./DataServer
-    container_name: mu-ds
-    env_file: .env
-    environment:
-      - PUBLIC_IP=${PUBLIC_IP}
-    depends_on:
-      mu-sqlserver:
-        condition: service_healthy
-    ports:
-      - "55960:55960"
-    volumes:
-      - ./GameServerRegular:C:/GameServerRegular
-      - ./Data:C:/Data
-      - ./IGCData:C:/IGCData
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.3
-
-  mu-cs:
-    build: ./ConnectServer
-    container_name: mu-cs
-    env_file: .env
-    environment:
-      - PUBLIC_IP=${PUBLIC_IP}
-    depends_on:
-      mu-ds:
-        condition: service_started
-    ports:
-      - "44405:44405/tcp"   # Client List
-      - "44405:44405/udp"   # Client List (Discovery)
-      - "55667:55667/udp"   # GS Registration (Match your INI)
-      - "55667:55667/tcp"   # Some IGC versions fallback to TCP for handshake
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.4
 
   mu-web:
     build: ./Web
@@ -72,43 +14,7 @@ services:
     networks:
       mu-network:
         ipv4_address: 10.10.0.5
-
-  mu-gs-regular:
-    build: ./GameServerRegular
-    container_name: mu-gs-regular
-    env_file: .env
-    environment:
-      - PUBLIC_IP=${PUBLIC_IP}
-    depends_on:
-      mu-ds:
-        condition: service_started
-    ports:
-      - "55901:55901"
-    volumes:
-      - ./Data:C:/mu/Data
-      - ./IGCData:C:/mu/IGCData
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.10
-
-  mu-gs-siege:
-    build: ./GameServerSiege
-    container_name: mu-gs-siege
-    env_file: .env
-    environment:
-      - PUBLIC_IP=${PUBLIC_IP}
-    depends_on:
-      mu-ds:
-        condition: service_started
-    ports:
-      - "55919:55919"
-    volumes:
-      - ./Data:C:/mu/Data
-      - ./IGCData:C:/mu/IGCData
-    networks:
-      mu-network:
-        ipv4_address: 10.10.0.11
-
+        
 volumes:
   sqldata:
     name: mu-sqldata
