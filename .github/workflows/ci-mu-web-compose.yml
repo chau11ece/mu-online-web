@@ -43,14 +43,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Start services
-        run: docker-compose up -d mu-web
+        run: docker-compose up -d mu-web-test
 
       - name: Wait for web to be ready
         run: Start-Sleep -Seconds 15
 
       - name: Test web server is responding
         run: |
-          $response = Invoke-WebRequest -Uri "http://localhost:8082" -UseBasicParsing -TimeoutSec 10
+          $response = Invoke-WebRequest -Uri "http://localhost:8089" -UseBasicParsing -TimeoutSec 10
           if ($response.StatusCode -eq 200) { 
             Write-Host "✅ Web server is running!" 
           } else { 
