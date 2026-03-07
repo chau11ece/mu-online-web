@@ -151,8 +151,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy mu-web (replace running container)
-        run: docker-compose -f docker-compose.local.yml up -d --force-recreate mu-web
+      - name: Remove existing mu-web container
+        run: |
+          $ErrorActionPreference = 'SilentlyContinue'
+          docker rm -f mu-web 2>&1 | Out-Null
+          $LASTEXITCODE = 0
+
+      - name: Deploy mu-web
+        run: docker-compose -f docker-compose.local.yml up -d mu-web
 
       - name: Verify deployment health
         run: |
