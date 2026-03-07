@@ -1,0 +1,356 @@
+/*
+ * custom.css — MU Da Nang branding & visual overrides
+ * ---------------------------------------------------
+ * This file OVERRIDES style.css without editing the original.
+ * Add all your customizations here — never touch style.css directly.
+ *
+ * Color palette:
+ *   --amber-light : #ffcc88   (text highlights)
+ *   --amber       : #c6884c   (primary text/links)
+ *   --amber-dark  : #7a3a00   (borders, accents)
+ *   --teal        : #00c8a8   (Da Nang accent — coastal teal)
+ *   --bg-dark     : #0d0804   (page background)
+ *   --panel-bg    : rgba(20, 8, 0, 0.85)
+ */
+
+/* ================================================================
+   1. TYPOGRAPHY — switch to Cinzel for headings, Open Sans for body
+   Cinzel is a fantasy/Roman-style font — perfect for MU Online.
+   Open Sans is clean and very readable for body text.
+   ================================================================ */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+}
+
+.logo,
+#top_menu,
+.main_menu_default_button,
+.main_menu_default_button_rank,
+.tab label,
+.title,
+.tdTitle,
+.author,
+.tema,
+#side_menu {
+    font-family: 'Cinzel', serif !important;
+}
+
+/* ================================================================
+   2. LOGO / SERVER NAME
+   The logo shows $set[4] (server name from DB admin panel).
+   We make it bigger, bolder, and add the teal Da Nang accent glow.
+   ================================================================ */
+
+.logo {
+    font-family: 'Cinzel Decorative', serif !important;
+    font-size: 38px !important;
+    font-weight: 900 !important;
+    letter-spacing: 3px;
+    color: #ffcc88 !important;
+    text-shadow:
+        0 0 10px rgba(0, 200, 168, 0.4),   /* teal glow — Da Nang coastal accent */
+        0 2px 4px rgba(0, 0, 0, 0.9),
+        0 0 30px rgba(198, 136, 76, 0.3);  /* warm amber glow */
+    text-transform: uppercase;
+    padding: 14px 18px 24px !important;
+}
+
+/* ================================================================
+   3. TOP MENU BAR (server time + language selector)
+   Makes it look more polished with a subtle dark gradient.
+   ================================================================ */
+
+#top_menu {
+    font-family: 'Cinzel', serif !important;
+    font-size: 13px !important;
+    background: linear-gradient(to right, rgba(10,4,0,0.95), rgba(30,12,2,0.95), rgba(10,4,0,0.95)) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.8), inset 0 -1px 0 rgba(198,136,76,0.3) !important;
+    border-radius: 0 0 6px 6px !important;
+    padding: 7px 12px !important;
+    letter-spacing: 1px;
+}
+
+.server-time {
+    color: #c6884c;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-left: 0 !important;    /* remove the fixed 400px left margin from style.css */
+    position: static !important;
+}
+
+#timer {
+    color: #00c8a8;   /* teal — Da Nang accent color for the live clock */
+    font-weight: 600;
+    margin-left: 6px !important;
+}
+
+/* ================================================================
+   4. NAVIGATION MENU
+   Menu items get Cinzel font + teal hover color.
+   ================================================================ */
+
+.menu {
+    padding-top: 210px !important;  /* tighten spacing under logo */
+}
+
+.menu a {
+    font-family: 'Cinzel', serif !important;
+    font-size: 11pt !important;
+    letter-spacing: 1px;
+    color: #d4a060 !important;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    transition: color 0.25s ease, text-shadow 0.25s ease !important;
+}
+
+.menu a:hover {
+    color: #00c8a8 !important;    /* teal on hover */
+    text-shadow: 0 0 8px rgba(0, 200, 168, 0.5) !important;
+    text-decoration: none !important;
+}
+
+/* Active / selected menu item */
+.menu a.active {
+    color: #00c8a8 !important;
+    border-bottom: 1px solid #00c8a8;
+}
+
+/* ================================================================
+   5. NEWS CARDS
+   The news items are the first thing players see on the homepage.
+   We make each news post look like a proper card with a header bar.
+   ================================================================ */
+
+/* News title bar (the collapsible header of each news post) */
+.tema {
+    font-family: 'Cinzel', serif !important;
+    font-size: 11pt !important;
+    letter-spacing: 0.5px;
+    color: #ffcc88 !important;
+    background: linear-gradient(to right, rgba(100,40,5,0.7), rgba(60,20,2,0.5)) !important;
+    border-left: 3px solid #00c8a8;   /* teal left border accent */
+    padding: 10px 14px !important;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.tema:hover {
+    background: linear-gradient(to right, rgba(0,140,100,0.2), rgba(60,20,2,0.5)) !important;
+    border-left-color: #ffcc88;
+    color: #fff !important;
+}
+
+/* News content body */
+.news_content {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 16px 20px !important;
+    color: #e0c8a8;
+    background-color: rgba(15, 6, 0, 0.92) !important;
+}
+
+/* News date */
+.news_date {
+    font-size: 10px !important;
+    color: #00c8a8 !important;    /* teal date */
+    letter-spacing: 0.5px;
+}
+
+/* News author name */
+.author_name {
+    color: #00c8a8 !important;    /* teal author */
+}
+
+.author {
+    font-family: 'Cinzel', serif !important;
+    font-size: 8pt !important;
+    background-color: rgba(0, 10, 8, 0.7) !important;
+}
+
+/* ================================================================
+   6. SERVER STATUS PANEL (uptime + vote section)
+   ================================================================ */
+
+/* Online player count text */
+.uptime_online {
+    color: #ffcc88 !important;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.uptime_online span {
+    color: #00c8a8 !important;   /* online count in teal */
+    font-weight: 700 !important;
+    font-size: 22px !important;
+}
+
+/* Progress bar fill color → teal */
+.progress-bar {
+    background: linear-gradient(to bottom, #00e8c0, #00a888) !important;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+/* Progress bar track */
+.progress {
+    background: rgba(255, 200, 140, 0.15) !important;
+}
+
+/* Vote section */
+.vote_text {
+    font-family: 'Cinzel', serif !important;
+    color: #ffcc88 !important;
+}
+
+.vote_link_left,
+.vote_link_right {
+    color: #00c8a8 !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.vote_link_left:hover,
+.vote_link_right:hover {
+    color: #ffcc88 !important;
+}
+
+/* ================================================================
+   7. FORMS (login box, register, etc.)
+   ================================================================ */
+
+/* Form container */
+.form {
+    border: 1px solid rgba(0, 200, 168, 0.2) !important;   /* subtle teal border */
+    border-top: 22px solid rgba(0, 30, 24, 0.5) !important;
+}
+
+/* Input field placeholders */
+::-webkit-input-placeholder { color: #8a6a4c !important; }
+:-moz-placeholder           { color: #8a6a4c !important; }
+::-moz-placeholder          { color: #8a6a4c !important; }
+:-ms-input-placeholder      { color: #8a6a4c !important; }
+
+/* ================================================================
+   8. TABLES (rankings, character info)
+   Make alternating rows for readability.
+   ================================================================ */
+
+.table tbody tr:nth-child(even) {
+    background-color: rgba(0, 200, 168, 0.05);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 200, 168, 0.1) !important;
+    cursor: default;
+}
+
+/* Table title rows */
+.title,
+.tdTitle {
+    font-family: 'Cinzel', serif !important;
+    font-size: 10pt !important;
+    letter-spacing: 1px;
+    color: #ffcc88 !important;
+    text-transform: uppercase;
+}
+
+/* ================================================================
+   9. RANKING SIDEBAR (left panel mini-ranks)
+   ================================================================ */
+
+#side_menu {
+    font-family: 'Cinzel', serif !important;
+    font-size: 11pt !important;
+    border-left: 2px solid rgba(0, 200, 168, 0.3);
+}
+
+/* ================================================================
+   10. FOOTER
+   ================================================================ */
+
+#footer {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.footer_links a {
+    color: #7a5a3a !important;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.footer_links a:hover {
+    color: #00c8a8 !important;
+}
+
+.footer_info {
+    font-family: 'Cinzel', serif !important;
+    font-size: 11px !important;
+    letter-spacing: 1px;
+    color: #5a4030 !important;
+}
+
+/* ================================================================
+   11. ERROR & SUCCESS MESSAGES
+   ================================================================ */
+
+.error {
+    font-family: 'Open Sans', sans-serif;
+    border-left: 4px solid #ff4444 !important;
+    border-radius: 4px !important;
+    background: rgba(120, 20, 0, 0.85) !important;
+    padding: 10px 14px !important;
+    font-size: 12px;
+}
+
+.success {
+    font-family: 'Open Sans', sans-serif;
+    border-left: 4px solid #00c8a8 !important;
+    border-radius: 4px !important;
+    background: rgba(0, 80, 60, 0.85) !important;
+    padding: 10px 14px !important;
+    font-size: 12px;
+}
+
+/* ================================================================
+   12. SCROLLBAR (Chrome/Edge) — dark themed
+   ================================================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d0804;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a2010;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00c8a8;
+}
+
+/* ================================================================
+   13. LINKS — consistent color throughout
+   ================================================================ */
+
+a:link, a:active {
+    color: #c6884c !important;
+}
+
+a:hover {
+    color: #00c8a8 !important;
+    text-decoration: none !important;
+}
+
+/* ================================================================
+   14. UTILITY — smooth transitions on interactive elements
+   ================================================================ */
+
+a, button, input[type="submit"], .main_menu_default_button {
+    transition: all 0.25s ease !important;
+}

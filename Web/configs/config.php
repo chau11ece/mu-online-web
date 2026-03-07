@@ -17,7 +17,7 @@ $database = 'MuOnline';         // Database name
 $option['web_address']        = "http://192.168.100.96"; 
 $option['has_dl']             = 0;
 $option['md5']                = 0;
-$option['debug']              = 1; // 1=Show Errors / 0=Hidden
+$option['debug']              = 0; // 1=Show Errors / 0=Hidden
 $option['default_admin']      = 'test';
 $option['default_admin_ip']   = '127.0.0.1';
 $option['item_hex_lenght']    = 64;

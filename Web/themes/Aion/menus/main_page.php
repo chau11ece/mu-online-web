@@ -1,7 +1,6 @@
-<link type="text/css" href="../themes/aion/css/skitter.css" media="all" rel="stylesheet" />
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="../themes/aion/js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="../themes/aion/js/jquery.skitter.js"></script>
+<link type="text/css" href="../themes/Aion/css/skitter.css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="../themes/Aion/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="../themes/Aion/js/jquery.skitter.js"></script>
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function(){$(".box_skitter_large").skitter({interval: 5000})});
@@ -35,8 +34,8 @@ for($i=0,$max = mssql_num_rows($check_banners); $i < $max; $i++){
 
 $online = mssql_fetch_array(mssql_query("SELECT count(*) as count From MEMB_STAT where Connectstat='1'"));
 
-if($stscheck = @fsockopen($set['server_ip'], $set['server_port'], $ERROR_NO, $ERROR_STR, (float)0.5)){
-	$s = 'srv-online';
+if(@fsockopen($set['server_ip'], $set['server_port'], $ERROR_NO, $ERROR_STR, (float)0.5)){
+	$srv_online = 'srv-online';
 }
 else{
 	$srv_online = 'srv-offline';
@@ -45,7 +44,7 @@ echo'
 <div class="vote_uptime">
             <div id="uptime">
                   <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="150" aria-valuemin="0" aria-valuemax="150" style="width:'.$online['count'].'%"></div>
+                  <div class="progress-bar" role="progressbar" aria-valuenow="'.$online['count'].'" aria-valuemin="0" aria-valuemax="'.$set[10].'" style="width:'.($set[10] > 0 ? min(round($online['count'] / $set[10] * 100), 100) : 0).'%"></div>
 				  '.$set[10]. phrase_max.'
 			</div>
 		    <div class="uptime_online">

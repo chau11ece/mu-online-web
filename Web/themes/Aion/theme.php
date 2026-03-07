@@ -1,23 +1,27 @@
 <?php
 $set = web_settings();
 echo '
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="icon" type="ico" href="themes/aion/favicon.ico"/>	
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta content="'.$set[2].'" name="description"/>
-    <meta name="keywords" content="'.$set[1].'"/>
-	<title>'.$set[0].'</title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>	
-	<link rel="stylesheet" href="themes/Aion/css/style.css" />
-	<link rel="stylesheet" href="themes/Aion/css/hover.css" media="all"/>	
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="all"/>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/servertime.js"></script>
-	<script type="text/javascript" src="js/ajax.js"></script>
-    <script type="text/javascript">$(document).ready(function(){$("[title]").easyTooltip();});</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="themes/Aion/favicon.ico"/>
+    <meta name="description" content="'.$set[2].'" />
+    <meta name="keywords" content="'.$set[1].'" />
+    <title>'.$set[0].'</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="themes/Aion/css/style.css" />
+    <link rel="stylesheet" href="themes/Aion/css/hover.css" media="all"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="themes/Aion/css/custom.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/servertime.js"></script>
+    <script src="js/ajax.js"></script>
+    <script>$(document).ready(function(){$("[title]").easyTooltip();});</script>
 <!--    <script>$(document).keydown(function(event) {if (event.ctrlKey==true && (event.which == "61" || event.which == "107" || event.which == "173" || event.which == "109"  || event.which == "187"  || event.which == "189"  ) ) {event.preventDefault();}});$(window).bind("mousewheel DOMMouseScroll", function (event) {if (event.ctrlKey == true) {event.preventDefault();}});</script>-->
 </head>	
 <body>
@@ -63,7 +67,7 @@ echo '
                <a href="#"> '.phrase_privacy.' </a>&nbsp;  | &nbsp;
                <a href="#"> '.phrase_cotacts.' </a> 
 		    </div>
-		<div class="footer_info"> '.$set[0].' by r00tme | Copyrights &copy; MeMoS</div>
+		<div class="footer_info"> &copy; '.date('Y').' '.$set[0].' &mdash; All rights reserved.</div>
 	 </div>	 	
    </div>			
  </body>
