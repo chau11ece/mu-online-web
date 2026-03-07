@@ -39,6 +39,7 @@ services:
 
   mu-web:
     build: ./Web
+    image: mu-web:latest
     container_name: mu-web
     env_file: .env
     environment:
