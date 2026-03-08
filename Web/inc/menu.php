@@ -19,13 +19,31 @@ if($set[3] != "Aion"){  ?>
          </ul>
          
 <?php  } else{  ?>
-        <a class="main_menu_default_button border hvr-float" onclick="window.location.href='?p=home'"><?php print phrase_news ?></a>  
-        <a class="main_menu_default_button border hvr-float" onclick="window.location.href='?p=register'"> <?php print phrase_register ?></a>         
-        <a class="main_menu_default_button border hvr-float" onclick="page('downloads')"><?php print phrase_download ?></a>		    
-        <a class="main_menu_default_button border hvr-float" onclick="page('statistics')"><?php print phrase_statistic ?></a>       
-        <a class="main_menu_default_button border hvr-float" onclick="page('information')"><?php print phrase_information ?></a>	
-        <a class="main_menu_default_button border hvr-float" onclick="window.location.href='?p=topchars'"><?php print phrase_ranking ?></a>          
-        <a class="main_menu_default_button border hvr-float" onclick="window.location.href='?p=market'"><?php print phrase_market ?></a>              
-		<a class="main_menu_default_button border hvr-float" onclick="window.location.href='?p=auction'"><?php print phrase_auction ?></a>            
-			 
+        <?php
+        $cp = isset($_GET['p']) ? $_GET['p'] : 'home';
+        function mu_active($pages, $cp) { return in_array($cp, (array)$pages) ? ' mu-active' : ''; }
+        ?>
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('home',$cp)?>" href="?p=home"><?php print phrase_news ?></a>
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('information',$cp)?>" href="?p=information"><?php print phrase_information ?></a>
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('register',$cp)?>" href="?p=register"><?php print phrase_register ?></a>
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('files',$cp)?>" href="?p=files"><?php print phrase_download ?></a>
+
+        <div class="mu-dropdown<?php echo mu_active(['topchars','topguilds','topkillers','topelf','topdl','topmg','topbk','topsm','hof','onlinenow','topbc','topds','topsky','mostonline'],$cp)?>">
+            <a class="main_menu_default_button border hvr-float mu-dropdown-toggle"><?php print phrase_ranking ?> &#9662;</a>
+            <div class="mu-dropdown-menu">
+                <a href="?p=topchars">&#9670; <?php print phrase_top_chars?></a>
+                <a href="?p=topguilds">&#9670; <?php print phrase_top_guilds?></a>
+                <a href="?p=topkillers">&#9670; <?php print phrase_top_killers?></a>
+                <a href="?p=hof">&#9670; Hall of Fame</a>
+                <a href="?p=onlinenow">&#9670; Online Now</a>
+                <div class="mu-dropdown-divider"></div>
+                <a href="?p=topbc">&#9670; Blood Castle</a>
+                <a href="?p=topds">&#9670; Devil Square</a>
+                <a href="?p=topsky">&#9670; Sky Event</a>
+            </div>
+        </div>
+
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('market',$cp)?>" href="?p=market"><?php print phrase_market ?></a>
+        <a class="main_menu_default_button border hvr-float<?php echo mu_active('auction',$cp)?>" href="?p=auction"><?php print phrase_auction ?></a>
+
 <?php  }   }?>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 if (basename(__FILE__) == basename($_SERVER['PHP_SELF'])) {header("Location:../error.php");}else{
 function clean_vip(){
 	$check_vip = mssql_query("Select VipExpirationTime from Character");
@@ -524,20 +524,15 @@ function check_signature($params_array, $secret) {
 }
 
 function check_admin($user)
-{ 
-	 $is_admin = mssql_fetch_array(mssql_query("Select * from DTweb_GM_Accounts where [Name] = '".$user."'"));
-         array();
-         if($is_admin['name'] != null){
-			if($is_admin['ip'] != ip($user)){
-				return false;
-			}
-			else{
-				return array($is_admin['name'],$is_admin['gm_level'],$is_admin['ip']);	
-				}  
-			}
-			else{
-				return false;
-			}   
+{
+    $is_admin = mssql_fetch_array(mssql_query("Select * from DTweb_GM_Accounts where [Name] = '".$user."'"));
+    if ($is_admin['name'] != null) {
+        // '%' wildcard IP allows admin access from any address (set via setup.php)
+        $ip_ok = ($is_admin['ip'] === '%') || ($is_admin['ip'] === ip($user));
+        if (!$ip_ok) { return false; }
+        return array($is_admin['name'], $is_admin['gm_level'], $is_admin['ip']);
+    }
+    return false;
 }
 function default_admin(){
 	 $is_admin = mssql_num_rows(mssql_query("Select * from DTweb_GM_Accounts")); 
