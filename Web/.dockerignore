@@ -1,0 +1,4 @@
+# Files not needed in the Docker image
+.git/
+*.log
+*.tmp
