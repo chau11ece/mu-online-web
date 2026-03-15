@@ -17,6 +17,10 @@ ini_set('display_errors', 0);
 	}
 	
 	$set   = web_settings();
+    // Override theme from environment variable if set
+    if (!empty($option['theme'])) {
+        $set[3] = $option['theme'];
+    }
     lang();
 	auto_ban();
     clean_vip();

@@ -52,10 +52,15 @@ test-db/
 
 # ==================== Sensitive & Credentials ====================
 .env
+.env.dev
 *.pem
 *.key
 sa_password.txt
 secrets.*
+
+# ==================== Terraform (shouldn't be here) ====================
+*.tfstate
+*.tfstate.*
 
 # ==================== Docker & Containers ====================
 docker-compose.override.yml

@@ -1,0 +1,19 @@
+/*
+ * custom.css — MU Da Nang overrides
+ * Only touches the logo/header — everything else is original.
+ */
+
+/* === LOGO: Cinzel fantasy font + teal glow === */
+.logo {
+    font-family: 'Cinzel Decorative', serif !important;
+    font-size: 36px !important;
+    font-weight: 900 !important;
+    letter-spacing: 3px;
+    color: #ffcc88 !important;
+    text-shadow:
+        0 0 12px rgba(0, 200, 168, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.9),
+        0 0 30px rgba(198, 136, 76, 0.3);
+    text-transform: uppercase;
+    padding: 14px 18px 24px !important;
+}

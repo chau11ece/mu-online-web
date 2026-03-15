@@ -777,3 +777,7 @@ define("phrase_vip_trial_already_used", " You have used the free trial option al
 define("phrase_not_enough_levels", " You need more levels to buy vip"); 
 define("phrase_not_enough_gresets", " You need more grand resets to buy vip");
 define("phrase_not_enough_resets", " You need more resets to buy vip");
+
+// Menu constants (missing from original)
+define("phrase_top_guilds", " Top Guilds ");
+define("phrase_top_killers", " Top Killers ");
