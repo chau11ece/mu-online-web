@@ -8,19 +8,21 @@ if (basename(__FILE__) == basename($_SERVER['PHP_SELF'])) {
 
 // ================================================================================================
 // SQL Server Connection Settings
+// Reads from environment variables (set by Docker/Terraform), falls back to defaults for local dev
 // ================================================================================================
-$sql_host = '192.168.100.96';        // SQL Server (Docker mode: 10.10.0.2 | overridden by SQL_SERVER env in local mode)
-$sql_user = 'sa';               // SQL user
-$sql_pass = 'Abcd@1234';        // Your SQL password
-$database = 'MuOnline';         // Database name
+$sql_host = getenv('SQL_SERVER') ?: (getenv('DB_HOST') ?: '192.168.100.96');
+$sql_user = getenv('DB_USER')   ?: 'sa';
+$sql_pass = getenv('DB_PASS')   ?: 'Abcd@1234';
+$database = getenv('DB_NAME')   ?: 'MuOnline';
 
-$option['web_address']        = "http://192.168.100.96"; 
+$option['web_address']        = getenv('PUBLIC_IP') ? "http://" . getenv('PUBLIC_IP') : "http://192.168.100.96";
 $option['has_dl']             = 0;
 $option['md5']                = 0;
-$option['debug']              = 0; // 1=Show Errors / 0=Hidden
+$option['debug']              = 1; // 1=Show Errors (skip zbblock) / 0=Hidden
 $option['default_admin']      = 'test';
 $option['default_admin_ip']   = '127.0.0.1';
 $option['item_hex_lenght']    = 64;
+$option['theme']              = getenv('THEME') ?: ''; // Theme override via env var
 
 // ================================================================================================
 // Game & Economy Settings
