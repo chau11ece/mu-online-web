@@ -1,0 +1,300 @@
+name: CI/CD — mu-web
+
+# =============================================================================
+# Week 12: CI/CD Pipeline
+# Based on your existing ci-cd-mu-web-compose.yml
+# ADDED: Deploy job using Ansible (replaces direct docker-compose deploy)
+# KEPT:  All existing build/test/push jobs unchanged
+# =============================================================================
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'Web/**'
+      - 'Web_v1p0/**'
+      - 'docker-compose.local.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'Web/**'
+      - 'Web_v1p0/**'
+
+permissions:
+  contents: read
+  packages: write
+
+# Cancel in-progress runs on the same branch — no stale deploys
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── 1. Build ──────────────────────────────────────────────────────────────
+  # Build on Linux (no Windows containers needed)
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build mu-web image
+        working-directory: ./Web_v1p0
+        run: docker build -t mu-web:latest .
+
+      - name: Show image size
+        run: docker images mu-web:latest --format "Built {{.Repository}}:{{.Tag}} — {{.Size}}"
+
+  # ── 2. Test ───────────────────────────────────────────────────────────────
+  # Test on Linux (no Windows containers needed)
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-cleanup stale test container
+        run: |
+          docker rm -f mu-web-test 2>&1 || true
+
+      - name: Start isolated test container
+        run: |
+          docker run -d \
+            --name mu-web-test \
+            -p 8089:80 \
+            -e SQL_SERVER=192.168.100.96,1433 \
+            -e DB_HOST=192.168.100.96 \
+            -e DB_NAME=MuOnline \
+            -e DB_USER=sa \
+            -e "DB_PASS=Abcd@1234" \
+            mu-web:latest
+
+      - name: Verify container started
+        run: |
+          sleep 5
+          state=$(docker inspect -f '{{.State.Status}}' mu-web-test)
+          echo "Container state: $state"
+          docker logs mu-web-test
+          if [ "$state" != "running" ]; then echo "Container exited immediately"; exit 1; fi
+
+      - name: Wait for Apache+PHP to be ready
+        run: |
+          max_wait=180
+          interval=10
+          elapsed=0
+          echo "Polling http://localhost:8089/health.php..."
+          while [ $elapsed -lt $max_wait ]; do
+            if curl -f http://localhost:8089/health.php > /dev/null 2>&1; then
+              echo "Ready after ${elapsed}s"
+              exit 0
+            fi
+            sleep $interval
+            elapsed=$((elapsed + interval))
+            echo "  Waiting... (${elapsed}s)"
+          done
+          echo "PHP did not respond within ${max_wait}s"
+          exit 1
+
+      - name: Test health endpoint responds
+        run: |
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8089/health.php)
+          if [ "$status_code" != "200" ]; then echo "Expected 200, got $status_code"; exit 1; fi
+          echo "health.php 200 OK"
+
+      - name: Test health response is ok
+        run: |
+          response=$(curl -s http://localhost:8089/health.php)
+          echo "Response: $response"
+          status=$(echo $response | jq -r '.status')
+          if [ "$status" != "ok" ]; then
+            echo "Expected status=ok, got: $status"
+            echo $response | jq -r '.checks | to_entries[] | select(.value | startswith("failed")) | "  FAIL \(.key): \(.value)"'
+            exit 1
+          fi
+          echo "All health checks passed"
+
+      - name: Test PHP version is reported
+        run: |
+          response=$(curl -s http://localhost:8089/health.php)
+          php_version=$(echo $response | jq -r '.php')
+          if [ -z "$php_version" ] || [ "$php_version" = "null" ]; then echo "PHP version missing"; exit 1; fi
+          echo "PHP version: $php_version"
+
+      - name: Test homepage responds
+        run: |
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8089)
+          if [ "$status_code" != "200" ]; then echo "Homepage returned $status_code"; exit 1; fi
+          echo "Homepage 200 OK"
+
+      - name: Cleanup test container
+        if: always()
+        run: |
+          docker logs mu-web-test
+          docker rm -f mu-web-test 2>&1 || true
+
+  # ── 3. Push ───────────────────────────────────────────────────────────────
+  # Push to GHCR and DockerHub
+  push:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: Generate image tag
+        id: tag
+        run: |
+          tag=${GITHUB_SHA:0:7}
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "Image tag: $tag"
+
+      # Push to GHCR (existing)
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GHCR
+        run: |
+          tag=${{ steps.tag.outputs.tag }}
+          docker tag mu-web:latest ghcr.io/${{ github.repository_owner }}/mu-web:$tag
+          docker tag mu-web:latest ghcr.io/${{ github.repository_owner }}/mu-web:latest
+          docker push ghcr.io/${{ github.repository_owner }}/mu-web:$tag
+          docker push ghcr.io/${{ github.repository_owner }}/mu-web:latest
+          echo "Pushed to GHCR: $tag + latest"
+
+      # Push to DockerHub (NEW — Ansible pulls from here on the droplet)
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push image to DockerHub
+        run: |
+          tag=${{ steps.tag.outputs.tag }}
+          docker tag mu-web:latest chaudevops/mu-web:$tag
+          docker tag mu-web:latest chaudevops/mu-web:latest
+          docker push chaudevops/mu-web:$tag
+          docker push chaudevops/mu-web:latest
+          echo "Pushed to DockerHub: chaudevops/mu-web:$tag + latest"
+
+      - name: Cleanup dangling images
+        run: docker image prune -f
+
+  # ── 4. Deploy (LOCAL — Mac for development testing) ──────────────────────
+  # Deploy to local Mac for development testing
+  deploy-local:
+    needs: push
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove existing mu-web container
+        run: |
+          docker rm -f mu-web 2>&1 || true
+
+      - name: Deploy mu-web locally (develop)
+        run: docker-compose -f docker-compose.local.yml up -d mu-web
+
+      - name: Verify local deployment health
+        run: |
+          max_wait=120
+          interval=10
+          elapsed=0
+          echo "Waiting for deployed container on http://localhost:8080/health.php..."
+          while [ $elapsed -lt $max_wait ]; do
+            response=$(curl -s http://localhost:8080/health.php 2>/dev/null || echo "{}")
+            status=$(echo $response | jq -r '.status' 2>/dev/null || echo "unknown")
+            if [ "$status" = "ok" ]; then
+              echo "Local deployment healthy after ${elapsed}s"
+              exit 0
+            fi
+            sleep $interval
+            elapsed=$((elapsed + interval))
+            echo "  Waiting... (${elapsed}s)"
+          done
+          echo "Local container did not become healthy within ${max_wait}s"
+          exit 1
+
+  # ── 5. Deploy (PRODUCTION — DigitalOcean via Ansible) ────────────────────
+  # Deploy to danangmu.com droplet using Ansible
+  # Only runs on main branch after push succeeds
+  deploy-production:
+    needs: push
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ansible-mu repo
+        uses: actions/checkout@v4
+        with:
+          # If ansible-mu is a separate repo, use:
+          # repository: chaudevops/ansible-mu
+          # token: ${{ secrets.GH_PAT }}
+          # For now assumes ansible-mu/ is in the same repo
+          sparse-checkout: ansible-mu
+
+      - name: Write Ansible vault password
+        run: |
+          # Write vault password to temp file for this run
+          echo "$ANSIBLE_VAULT_PASS" > /tmp/vault-pass.txt
+        env:
+          ANSIBLE_VAULT_PASS: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+
+      - name: Write SSH private key
+        run: |
+          echo "$SSH_KEY" > /tmp/mu-deploy
+          chmod 600 /tmp/mu-deploy
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run Ansible deploy playbook
+        run: |
+          tag=${{ needs.push.outputs.image_tag }}
+          echo "Deploying chaudevops/mu-web:$tag to danangmu.com..."
+          ansible-playbook ansible-mu/playbooks/deploy-mu.yml \
+            --inventory ansible-mu/inventory/hosts.ini \
+            --private-key /tmp/mu-deploy \
+            --vault-password-file /tmp/vault-pass.txt \
+            --extra-vars "mu_image=chaudevops/mu-web:$tag" \
+            -v
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+
+      - name: Verify production health
+        run: |
+          max_wait=120
+          interval=10
+          elapsed=0
+          echo "Verifying http://danangmu.com/health.php..."
+          while [ $elapsed -lt $max_wait ]; do
+            response=$(curl -s http://danangmu.com/health.php 2>/dev/null || echo "{}")
+            status=$(echo $response | jq -r '.status' 2>/dev/null || echo "unknown")
+            if [ "$status" = "ok" ]; then
+              echo "Production healthy after ${elapsed}s"
+              echo "$response"
+              exit 0
+            fi
+            sleep $interval
+            elapsed=$((elapsed + interval))
+            echo "  Waiting... (${elapsed}s)"
+          done
+          echo "Production did not become healthy — triggering rollback"
+          exit 1
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Deploy failed — rolling back..."
+          ansible-playbook ansible-mu/playbooks/rollback.yml \
+            --inventory ansible-mu/inventory/hosts.ini \
+            --private-key /tmp/mu-deploy \
+            --vault-password-file /tmp/vault-pass.txt
+
+      - name: Cleanup secrets from runner
+        if: always()
+        run: |
+          rm -f /tmp/vault-pass.txt
+          rm -f /tmp/mu-deploy
+          echo "Secrets cleaned from runner"
