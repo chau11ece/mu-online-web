@@ -50,3 +50,6 @@ Select PDO SQLServ and click Check SQL Connection
 Now if you want to change your admincp please go to constants.php
 
 NOTE: Delete phpmyadmin folder if you are not using MySQL due to security purposes
+
+---
+Last updated: 2026-03-28 - Production deployment test
