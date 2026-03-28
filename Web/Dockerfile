@@ -1,33 +1,58 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2022
+# DMNCMS / MuCMS Pro Dockerfile
+# PHP 7.4 with IonCube Loader and FreeTDS for SQL Server
 
-# 1. Install VC++ Redist
-ADD https://aka.ms/vs/17/release/vc_redist.x64.exe C:/vc_redist.x64.exe
-RUN C:\vc_redist.x64.exe /quiet /install
+FROM php:7.4-apache
 
-# 2. ODBC Driver (Required for SQLSRV)
-RUN powershell -Command "Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2345415&clcid=0x409' -OutFile 'C:/msodbcsql.msi' -UserAgent 'Mozilla/5.0'"
-RUN msiexec /i C:\msodbcsql.msi /qn /norestart IACCEPTMSODBCSQLLICENSETERMS=YES
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gnupg \
+    curl \
+    libzip-dev \
+    zip \
+    unzip \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    freetds-dev \
+    freetds-bin \
+    unixodbc \
+    unixodbc-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 3. Download PHP 8.2.30 NTS x64 for Windows
-RUN powershell -Command "Invoke-WebRequest -Uri 'https://windows.php.net/downloads/releases/php-8.2.30-nts-Win32-vs16-x64.zip' -OutFile 'C:/php.zip' -UseBasicParsing; Expand-Archive -Path 'C:/php.zip' -DestinationPath 'C:/php'; Remove-Item 'C:/php.zip'"
+# Install PHP extensions including PDO DBLIB for SQL Server
+# First configure and install GD, then install other extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) zip pdo pdo_mysql
 
-# 4. Download SQLSRV + PDO_SQLSRV extensions for PHP 8.2 NTS x64
-RUN powershell -Command "Invoke-WebRequest -Uri 'https://github.com/microsoft/msphpsql/releases/download/v5.12.0/Windows_5.12.0RTW.zip' -OutFile 'C:/sqlsrv.zip' -UseBasicParsing; Expand-Archive -Path 'C:/sqlsrv.zip' -DestinationPath 'C:/sqlsrv_tmp'; Get-ChildItem 'C:/sqlsrv_tmp' -Recurse | Where-Object { $_.Name -match 'php_(pdo_)?sqlsrv_82_nts_x64' } | Copy-Item -Destination 'C:/php/ext/'; Remove-Item 'C:/sqlsrv_tmp' -Recurse -Force; Remove-Item 'C:/sqlsrv.zip'"
+# Create symlink for libsybdb (FreeTDS library) in the standard location
+RUN ln -s /usr/lib/x86_64-linux-gnu/libsybdb.so /usr/lib/libsybdb.so || true
 
-# 5. Copy configured php.ini (only the config file — binaries come from step 3/4)
-COPY php/php.ini C:/php/php.ini
+# Install pdo_dblib separately (requires freetds-dev which was installed above)
+RUN docker-php-ext-install pdo_dblib
 
-# 6. Copy Web files
-COPY . C:/inetpub/wwwroot/
+# Install IonCube Loader for PHP 7.4
+RUN curl -Lo /tmp/ioncube_loader_lin_7.4.so https://downloads.ioncube.com/loader_downloads/ioncube_loader_lin_7.4.so \
+    && cp /tmp/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/ioncube_loader_lin_7.4.so \
+    && echo "zend_extension=ioncube_loader_lin_7.4.so" > /usr/local/etc/php/conf.d/ioncube.ini \
+    && rm -f /tmp/ioncube_loader_lin_7.4.so
 
-# 7. Copy start script
-COPY start.ps1 C:/start.ps1
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-WORKDIR C:/inetpub/wwwroot
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy existing application
+COPY . /var/www/html/
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 777 /var/www/html/application/data \
+    && chmod -R 777 /var/www/html/application/config
+
+# Expose port 80
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD powershell -Command \
-    "try { $r = Invoke-WebRequest -Uri 'http://localhost/health.php' -UseBasicParsing; if ($r.StatusCode -eq 200) { exit 0 } else { exit 1 } } catch { exit 1 }"
-
-CMD ["powershell", "-Command", "C:/start.ps1"]
+# Start Apache
+CMD ["apache2-foreground"]
