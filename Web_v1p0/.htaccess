@@ -1,1 +1,0 @@
-RewriteRule ^(includes/|submit\.php) - [F,L,NC]
