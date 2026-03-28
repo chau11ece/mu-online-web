@@ -4,8 +4,12 @@
  * Returns JSON response for CI/CD pipeline validation
  */
 
+// Set JSON header
 header('Content-Type: application/json');
 http_response_code(200);
+
+// Start output buffering to catch any PHP errors
+ob_start();
 
 // Basic health checks
 $checks = [];
@@ -78,4 +82,8 @@ $response = [
     'checks' => $checks
 ];
 
+// Clear any output buffer (to remove PHP warnings/notices)
+ob_end_clean();
+
+// Output JSON
 echo json_encode($response, JSON_PRETTY_PRINT);
