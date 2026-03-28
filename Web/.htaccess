@@ -26,6 +26,11 @@ RewriteCond %{REQUEST_URI} system.*
 RewriteRule ^(.*)$ index.php [L]
 RewriteCond %{REQUEST_URI} application.*
 RewriteRule ^(.*)$ index.php [L]
+
+# Exclude health.php from rewrite rules
+RewriteCond %{REQUEST_URI} ^/health\.php$ [NC]
+RewriteRule ^ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
