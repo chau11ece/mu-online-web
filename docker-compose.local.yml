@@ -1,10 +1,11 @@
-# docker-compose.local.yml — Local dev mode (SSH tunnel to prod DB)
+# docker-compose.local.yml — Test production image locally (SSH tunnel to prod DB)
 # Usage:
-#   1. Open tunnel:  ../scripts/dev-tunnel.sh &
-#   2. Start:        docker-compose -f docker-compose.local.yml up --build
+#   1. Open tunnel:  cd ../terraform && ./scripts/dev-tunnel.sh &
+#   2. Start:        docker compose -f docker-compose.local.yml up --build
 #   3. Browse:       http://localhost:8080
 #
-# Connects to MSSQL via SSH tunnel through host.docker.internal
+# Tests the BUILT image (no volume mount) against the PRODUCTION database
+# Use this for final validation before pushing to Docker Hub
 
 services:
 
@@ -12,11 +13,11 @@ services:
     build:
       context: ./Web
       dockerfile: Dockerfile.linux
-    image: mu-web:dev
-    container_name: mu-web-dev
+    image: mu-web:prod
+    container_name: mu-web-prod-test
     env_file: .env.dev
     environment:
       - SQL_SERVER=host.docker.internal,1433
-      - THEME=Ascendance
+      - THEME=Aion
     ports:
       - "8080:80"

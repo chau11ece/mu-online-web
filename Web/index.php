@@ -1,46 +1,36 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
-ini_set('display_errors', 0);
-	@session_start();
-	ob_start();	
 
-	require $_SERVER['DOCUMENT_ROOT']."/configs/config.php";
-	include $_SERVER['DOCUMENT_ROOT']."/inc/geoip.php";
-	require $_SERVER['DOCUMENT_ROOT']."/inc/sqlcfg.php";
-	require $_SERVER['DOCUMENT_ROOT']."/inc/main_funcs.php";
-	require $_SERVER['DOCUMENT_ROOT']."/inc/modules_funcs.php";	
-	require $_SERVER['DOCUMENT_ROOT']."/inc/iteminfouser.php";
-	require $_SERVER['DOCUMENT_ROOT']."/inc/market_funcs.php";
+    ob_start();
+	// ===================================================================================================
+	// Package      : DmN MuCMS
+	// Version      : 1.2.0
+	// Author       : neo6 <Salvis87@inbox.lv>
+	// ===================================================================================================
+    $host = isset($_SERVER['HTTP_HOST']) ? htmlspecialchars($_SERVER['HTTP_HOST']) : htmlspecialchars(getenv('HTTP_HOST'));
+    $self = isset($_SERVER['PHP_SELF']) ? htmlspecialchars($_SERVER['PHP_SELF']) : htmlspecialchars(getenv('PHP_SELF'));
 
-	if ($option['debug'] == 0){	
-	require $_SERVER['DOCUMENT_ROOT']."/block/zbblock.php";
+	if(file_exists('constants.php')){
+		require_once('constants.php');
+		require_once(BASEDIR . 'vendor/autoload.php');
+	} else{
+		exit('file constants.php not found.');
 	}
-	
-	$set   = web_settings();
-    // Override theme from environment variable if set
-    if (!empty($option['theme'])) {
-        $set[3] = $option['theme'];
-    }
-    lang();
-	auto_ban();
-    clean_vip();
-	
-
-// Double Check if the theme exist	
-$theme = $_SERVER['DOCUMENT_ROOT'].'/themes/' . $set[3] . '/theme.php';
-if (file_exists($theme)) {
-    require($_SERVER['DOCUMENT_ROOT'].'/themes/' . $set[3] . '/theme.php');
-} else {
-     exit("The theme <font color='red'>".$set[3]."</font> doesn't exists! Check the file name or directory, please!");
-	 
-}
-
-if((mssql_num_rows(mssql_query("Select * from DTweb_GM_Accounts"))) == 0){
-	echo "You need to use your external IP address. The default local IP and account 'test' has been set for default";
-	$add_admin = mssql_query("Insert into DTweb_GM_Accounts (name,gm_level,ip) values ('test','666','".$_SERVER['SERVER_ADDR']."')");
-}
-ob_end_flush();
-
-
-
-
+	if(defined('INSTALLED') && INSTALLED == false){
+		header("Location: http://" . $host . rtrim(dirname($self), '/\\') . "/setup/index.php");
+	} else{
+		if(defined('ENVIRONMENT')){
+			switch(ENVIRONMENT){
+				case 'development':
+					error_reporting(E_ALL & ~E_DEPRECATED);
+					ini_set('display_errors', '1');
+					break;
+				default:
+					error_reporting(0);
+					break;
+			}
+		}
+		require_once(SYSTEM_PATH . DS . 'common.php');
+		require_once(SYSTEM_PATH . DS . 'dmn.php');
+	}
+      
+    ob_end_flush();
