@@ -43,12 +43,30 @@ jobs:
       - name: Show image size
         run: docker images mu-web:latest --format "Built {{.Repository}}:{{.Tag}} — {{.Size}}"
 
+      - name: Save Docker image to artifact
+        run: docker save mu-web:latest | gzip > mu-web.tar.gz
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mu-web-image
+          path: mu-web.tar.gz
+          retention-days: 1
+
   # ── 2. Test ───────────────────────────────────────────────────────────────
   # Test on Linux (no Windows containers needed)
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mu-web-image
+
+      - name: Load Docker image
+        run: gunzip -c mu-web.tar.gz | docker load
+
       - name: Pre-cleanup stale test container
         run: |
           docker rm -f mu-web-test 2>&1 || true
@@ -137,6 +155,14 @@ jobs:
     outputs:
       image_tag: ${{ steps.tag.outputs.tag }}
     steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mu-web-image
+
+      - name: Load Docker image
+        run: gunzip -c mu-web.tar.gz | docker load
+
       - name: Generate image tag
         id: tag
         run: |
