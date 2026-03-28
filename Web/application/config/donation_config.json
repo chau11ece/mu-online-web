@@ -1,0 +1,17 @@
+{
+    "DEFAULT": {
+        "paypal": {
+            "active": "1",
+            "type": "1",
+            "sandbox": "0",
+            "email": "",
+            "punish_player": "0",
+            "reward_type": "1",
+            "paypal_fee": "0",
+            "paypal_fixed_fee": "",
+            "api_username": "",
+            "api_password": "",
+            "api_signature": ""
+        }
+    }
+}

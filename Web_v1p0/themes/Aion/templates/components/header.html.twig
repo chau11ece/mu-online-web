@@ -1,0 +1,12 @@
+{#
+    Header Component Template
+    Contains: Top menu (server time, language selector), Logo
+#}
+<div id="top_menu">
+    <div class="server-time">{{ phrases.phrase_server_time|default('Server Time') }}:</div>
+    <div id="timer">{{ phrases.phrase_loading|default('Loading...') }}</div>
+    {# Language form will be passed from PHP #}
+    {% if lang_form is defined %}{{ lang_form|raw }}{% endif %}
+</div>
+
+<div class="logo">{{ server_name|default('MU Online') }}</div>

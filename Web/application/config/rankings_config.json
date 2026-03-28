@@ -1,0 +1,35 @@
+{
+    "DEFAULT": {
+        "active": 1,
+        "player": {
+            "is_sidebar_module": 1,
+            "count": 5,
+            "count_in_sidebar": 5,
+            "cache_time": 60,
+            "display_resets": 1,
+            "display_gresets": 1,
+            "display_master_level": 0,
+            "display_status": 1,
+            "display_gms": 0,
+            "excluded_list": "",
+            "display_country": 1
+        },
+        "online": {
+            "is_sidebar_module": 1,
+            "count": 0,
+            "count_in_sidebar": 0,
+            "cache_time": 60,
+            "excluded_list": "",
+            "display_country": 1
+        },
+        "online_list": {
+            "active": "1",
+            "cache_time": 60,
+            "display_resets": 1,
+            "display_gresets": 1,
+            "display_gms": 0,
+            "excluded_list": "",
+            "display_country": 1
+        }
+    }
+}

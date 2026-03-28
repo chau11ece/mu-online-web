@@ -1,0 +1,52 @@
+3. Download DMNCMS 1.2.3 (Paste inside website main directory htdocs)
+4. Download DMNCMS checker tool and go to your domain.com/dmnmucms-checker.php
+5. Install IonCube
+6. Go to C:\xampp\php\ext and paste inside ioncube_loader_win_7.4.dll
+Go to C:\xampp\php\ and open php.ini paste this 
+zend_extension = "C:\xampp\php\ext\ioncube_loader_win_7.4.dll" before the [PHP]
+Restart apache
+7. Go to XAMPP Control Panel and Restart the apache
+8. Install PDO SQLSrv
+9. Go to C:\xampp\php\ext and paste pdo_sqlsrv_74_ts_x64.dll and sqlsrv_74_ts_x64.dll
+10.Go to C:\xampp\php\ and open php.ini and paste these 2 extension
+
+extension=pdo_sqlsrv_74_ts_x64
+extension=sqlsrv_74_ts_x64
+
+Restart apache
+
+11. Install ODBC Driver for SQL
+
+12. It's time to Install DMN CMS go to domain.com
+
+13. Check if all requirements met
+
+15. Enter your registered email address
+
+16. Enter your SQL Configuration
+
+Create dmncms database (make sure the user have rights to the dmncms database)
+Make sure your port 1433 is open (to your local only)
+Select PDO SQLServ and click Check SQL Connection
+
+** I am using IGCN and my account database is Me_MuOnline and character is MuOnline
+** DMNCMS works with IGCN Xteam MUDevs and other server files
+
+17. Connect your Database
+
+18. Insert the SQL Data
+
+19. Wait for dmncms to install the SQL tables.. It will take time 🙂
+
+
+20. Set up Admin Account 
+
+**Make sure you protect your admin account. This can be edited later
+
+21. You are now ready to use DMNCMS
+
+22. Access your Admincp
+
+Now if you want to change your admincp please go to constants.php
+
+NOTE: Delete phpmyadmin folder if you are not using MySQL due to security purposes

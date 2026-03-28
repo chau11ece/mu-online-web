@@ -1,0 +1,11 @@
+{
+    "events": {
+        "active": "1",
+        "event_timers": {
+            "1": {
+                "name": "Blood Castle",
+                "days": "18:00"
+            }
+        }
+    }
+}

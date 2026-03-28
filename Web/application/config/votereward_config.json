@@ -1,0 +1,16 @@
+{
+    "DEFAULT": {
+        "active": "1",
+        "req_char": "1",
+        "req_lvl": "0",
+        "req_res": "0",
+        "xtremetop_same_acc_vote": "0",
+        "xtremetop_link_numbers": "1",
+        "count_down": "1",
+        "is_monthly_reward": "0",
+        "amount_of_players_to_reward": "1",
+        "reward_formula": "",
+        "reward_type": "2"
+    },
+    "api_key": "587f9eaf155662307c5316a6968a57f5"
+}
