@@ -58,8 +58,8 @@ jobs:
           docker run -d \
             --name mu-web-test \
             -p 8089:80 \
-            -e SQL_SERVER=192.168.100.96,1433 \
-            -e DB_HOST=192.168.100.96 \
+            -e SQL_SERVER=mu-db-dev,1433 \
+            -e DB_HOST=mu-db-dev \
             -e DB_NAME=MuOnline \
             -e DB_USER=sa \
             -e "DB_PASS=Abcd@1234" \
