@@ -1,0 +1,11 @@
+PDOException: SQLSTATE[HY000]: General error: 20018 Invalid column name 'MasterLevel'. [20018] (severity 16) [SELECT MasterLevel AS mlevel FROM character WHERE Name = 'DeanW'] in /home/firestar/domains/firestarmu.co.uk/public_html/application/libraries/lib.db.php:149
+Stack trace:
+#0 /home/firestar/domains/firestarmu.co.uk/public_html/application/libraries/lib.db.php(149): PDOStatement->execute(Array)
+#1 /home/firestar/domains/firestarmu.co.uk/public_html/application/models/model.character.php(1603): db->execute(Array)
+#2 /home/firestar/domains/firestarmu.co.uk/public_html/application/models/model.character.php(1270): Mcharacter->load_master_level('DeanW', 'DEFAULT')
+#3 /home/firestar/domains/firestarmu.co.uk/public_html/application/controllers/controller.info.php(42): Mcharacter->load_character_info('DeanW', 'DEFAULT')
+#4 /home/firestar/domains/firestarmu.co.uk/public_html/system/router.class.php(78): info->character('4465616e57', 'DEFAULT')
+#5 /home/firestar/domains/firestarmu.co.uk/public_html/system/dmn.php(25): router->route(Object(request))
+#6 /home/firestar/domains/firestarmu.co.uk/public_html/index.php(33): require_once('/home/firestar/...')
+#7 {main}
+================================================================================

@@ -1,0 +1,20 @@
+services:
+  mu-web-prod:
+    build:
+      context: ./Web
+      dockerfile: Dockerfile.linux
+    image: mu-web:prod
+    container_name: mu-web-prod
+    env_file: .env.prod
+    environment:
+      - SQL_SERVER=your-prod-mssql-ip,1433  # Update to your DO MSSQL
+      - THEME=Aion
+    ports:
+      - "80:80"  # Prod port 80
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+

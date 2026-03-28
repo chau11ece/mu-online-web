@@ -1,0 +1,67 @@
+# docker-compose.dev.yml — Full local dev environment (web + database)
+# DMNCMS / MuCMS Pro version
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up --build   (first time)
+#   docker compose -f docker-compose.dev.yml up            (subsequent)
+#   Browse: http://localhost:8080
+#
+# Edit files in Web/ → changes apply on browser refresh (volume mount)
+# Database runs locally with test data — safe to break things
+
+services:
+
+  mu-web-dev:
+    build:
+      context: ./Web
+      dockerfile: Dockerfile
+    image: mu-web:dmncms
+    container_name: mu-web-dev
+    environment:
+      - DB_HOST=mu-db-dev,1433
+      - DB_USER=sa
+      - DB_PASS=Abcd@1234
+      - DB_NAME=MuOnline
+      - ENVIRONMENT=development
+      - ADMIN_USER=admin
+      - ADMIN_PASS=admin123
+      - ADMIN_PIN=123456
+      - SECURITY_SALT=ZgEyrOAxhG
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Web:/var/www/html
+    depends_on:
+      mu-db-dev:
+        condition: service_healthy
+    networks:
+      - mu-dev-network
+
+  mu-db-dev:
+    build: ../mu-database
+    image: mu-db:dev
+    container_name: mu-db-dev
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Abcd@1234
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_dev_data:/var/opt/mssql/data
+    networks:
+      - mu-dev-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 45s
+
+volumes:
+  mssql_dev_data:
+
+networks:
+  mu-dev-network:
+    name: mu-dev-network

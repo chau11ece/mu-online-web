@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<credits_DEFAULT_conf>
+  <credits_DEFAULT>
+    <db_1>account</db_1>
+    <table_1>T_InGameShop_Point</table_1>
+    <account_column_1>AccountID</account_column_1>
+    <credits_column_1>WCoinC</credits_column_1>
+    <title_1>WCoins</title_1>
+    <db_2>account</db_2>
+    <table_2>T_InGameShop_Point</table_2>
+    <account_column_2>AccountID</account_column_2>
+    <credits_column_2>GoblinPoint</credits_column_2>
+    <title_2>GoblinPoint</title_2>
+    <db_3>account</db_3>
+    <table_3>T_InGameShop_Point</table_3>
+    <account_column_3>AccountID</account_column_3>
+    <credits_column_3>WcoinP</credits_column_3>
+    <title_3>WcoinP</title_3>
+  </credits_DEFAULT>
+</credits_DEFAULT_conf>

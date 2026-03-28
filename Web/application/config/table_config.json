@@ -1,0 +1,61 @@
+{
+    "DEFAULT": {
+        "resets": {
+            "db": "game",
+            "table": "character",
+            "column": "resets",
+            "identifier_column": "Name"
+        },
+        "grand_resets": {
+            "db": "game",
+            "table": "character",
+            "column": "grand_resets",
+            "identifier_column": "Name"
+        },
+        "wcoins": {
+            "db": "account",
+            "table": "T_InGameShop_Point",
+            "column": "WcoinC",
+            "identifier_column": "AccountID"
+        },
+        "master_level": {
+            "db": "game",
+            "table": "character",
+            "column": "mLevel",
+            "identifier_column": "Name"
+        },
+        "bc": {
+            "db": "custom",
+            "table": "",
+            "column": "",
+            "identifier_column": ""
+        },
+        "ds": {
+            "db": "custom",
+            "table": "",
+            "column": "",
+            "identifier_column": ""
+        },
+        "cc": {
+            "db": "custom",
+            "table": "",
+            "column": "",
+            "identifier_column": "",
+            "column2": "",
+            "column3": ""
+        },
+        "cs": {
+            "db": "custom",
+            "table": "",
+            "column": "",
+            "identifier_column": ""
+        },
+        "duels": {
+            "db": "custom",
+            "table": "",
+            "column": "",
+            "identifier_column": "",
+            "column2": ""
+        }
+    }
+}

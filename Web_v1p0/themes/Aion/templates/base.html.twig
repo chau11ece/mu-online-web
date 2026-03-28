@@ -1,0 +1,61 @@
+{#
+    Base Template for Aion Theme
+    This is the main layout template that includes all components
+#}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="icon" type="ico" href="{{ theme_url }}/favicon.ico"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="{{ meta_description|default('MuOnline Server') }}" name="description"/>
+    <meta name="keywords" content="{{ meta_keywords|default('mu online, game server') }}"/>
+    <title>{{ page_title|default('MU Online') }}</title>
+    
+    {# Bootstrap & Font Awesome #}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="all"/>
+    
+    {# Theme CSS #}
+    <link rel="stylesheet" href="{{ theme_url }}/css/style.css" />
+    <link rel="stylesheet" href="{{ theme_url }}/css/hover.css" media="all"/>
+    <link rel="stylesheet" href="{{ theme_url }}/css/custom.css" />
+    
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    
+    {# jQuery & Bootstrap JS #}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/servertime.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript">$(document).ready(function(){$("[title]".easyTooltip();});</script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="container">
+            {# Header Component #}
+            {% include 'components/header.html.twig' %}
+            
+            {# Main Menu Component #}
+            {% include 'components/menu.html.twig' %}
+            
+            {# Main Content #}
+            <div id="contents">
+                {# Left Sidebar #}
+                {% include 'components/sidebar.html.twig' %}
+                
+                {# Right Content Panel #}
+                <div id="panel_right">
+                    <div id="content">
+                        {{ content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {# Footer Component #}
+        {% include 'components/footer.html.twig' %}
+    </div>
+</body>
+</html>

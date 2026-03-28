@@ -1,0 +1,16 @@
+{
+    "server_email": "noreply@danangmu.com",
+    "mail_mode": 0,
+    "smtp_server": "smtp.resend.com",
+    "smtp_port": 587,
+    "smtp_username": "apikey",
+    "smtp_password": "re_6g61Xw4o_Pis1zrcG26aEEL8Zr6TR6Kbf",
+    "smtp_auth": 1,
+    "smtp_use_ssl": 2,
+    "welcome_email": 1,
+    "vip_purchase_email": 1,
+    "donate_email_user": 1,
+    "donate_email_admin": 1,
+    "support_email_user": 1,
+    "support_email_admin": 1
+}
