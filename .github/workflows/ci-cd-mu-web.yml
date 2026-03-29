@@ -176,7 +176,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Push image to GHCR
         run: |
@@ -253,11 +253,9 @@ jobs:
       - name: Checkout ansible-mu repo
         uses: actions/checkout@v4
         with:
-          # If ansible-mu is a separate repo, use:
-          # repository: chaudevops/ansible-mu
-          # token: ${{ secrets.GH_PAT }}
-          # For now assumes ansible-mu/ is in the same repo
-          sparse-checkout: ansible-mu
+          repository: chau11ece/ansible-mu
+          path: ansible-mu
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Write Ansible vault password
         run: |
