@@ -35,7 +35,7 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libsybdb.so /usr/lib/libsybdb.so || true
 RUN docker-php-ext-install pdo_dblib
 
 # Install IonCube Loader for PHP 7.4
-COPY ioncube/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so
+COPY ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so
 RUN echo "zend_extension=ioncube_loader_lin_7.4.so" > /usr/local/etc/php/conf.d/ioncube.ini
 
 # Enable Apache mod_rewrite
