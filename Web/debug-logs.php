@@ -8,6 +8,23 @@ header('Content-Type: text/plain');
 
 echo "=== Debug Information ===\n\n";
 
+// Check if we should remove install.lock
+if (isset($_GET['remove_lock']) && $_GET['remove_lock'] === 'yes') {
+    $lockFile = __DIR__ . '/setup/data/install.lock';
+    if (file_exists($lockFile)) {
+        if (unlink($lockFile)) {
+            echo "✓ INSTALL LOCK REMOVED!\n";
+            echo "You can now visit: http://danangmu.com/setup/\n\n";
+        } else {
+            echo "✗ Failed to remove lock (permission denied)\n\n";
+        }
+    } else {
+        echo "✓ Lock file doesn't exist\n\n";
+    }
+}
+
+echo "";
+
 // Check if logs directory exists and is writable
 $logsDir = '/var/www/html/application/logs';
 echo "1. Logs directory check:\n";
