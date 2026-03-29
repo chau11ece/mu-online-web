@@ -55,7 +55,9 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 /var/www/html/application/data \
     && chmod -R 777 /var/www/html/application/config \
-    && chmod -R 777 /var/www/html/application/logs
+    && chmod -R 777 /var/www/html/application/logs \
+    && mkdir -p /var/www/html/application/logs/Tracy \
+    && chmod -R 777 /var/www/html/application/logs/Tracy
 
 # Expose port 80
 EXPOSE 80
