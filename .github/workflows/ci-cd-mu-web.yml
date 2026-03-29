@@ -38,7 +38,7 @@ jobs:
 
       - name: Build mu-web image
         working-directory: ./Web
-        run: docker build -t mu-web:latest .
+        run: docker build --no-cache --pull -t mu-web:latest .
 
       - name: Show image size
         run: docker images mu-web:latest --format "Built {{.Repository}}:{{.Tag}} — {{.Size}}"
