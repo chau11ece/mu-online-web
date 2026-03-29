@@ -255,7 +255,7 @@ jobs:
         with:
           repository: chau11ece/ansible-mu
           path: ansible-mu
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GHCR_TOKEN }}
 
       - name: Write Ansible vault password
         run: |
