@@ -266,7 +266,7 @@ jobs:
 
       - name: Write SSH private key
         run: |
-          printf '%s' "$SSH_KEY" > /tmp/mu-deploy
+          echo "$SSH_KEY" > /tmp/mu-deploy
           chmod 600 /tmp/mu-deploy
           # Verify key format
           head -1 /tmp/mu-deploy
