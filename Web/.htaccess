@@ -1,6 +1,11 @@
-Options +FollowSymlinks 
+Options +FollowSymlinks
 RewriteEngine On
 ServerSignature Off
+
+# Exclude debug and health endpoints FIRST (before any other rules)
+RewriteCond %{REQUEST_URI} ^/(health|debug-logs|test-db)\.php$ [NC]
+RewriteRule ^ - [L]
+
 RewriteRule ^news/(.*)/([0-9]+)\/?$ home/read-news/$1/$2 [NC,L]
 RewriteRule ^character/(.*)/(.*)\/?$ info/character/$1/$2 [NC,L]
 RewriteRule ^guild/(.*)/(.*)\/?$ info/guild/$1/$2 [NC,L]
@@ -26,10 +31,6 @@ RewriteCond %{REQUEST_URI} system.*
 RewriteRule ^(.*)$ index.php [L]
 RewriteCond %{REQUEST_URI} application.*
 RewriteRule ^(.*)$ index.php [L]
-
-# Exclude debug and health endpoints from rewrite rules
-RewriteCond %{REQUEST_URI} ^/(health|debug-logs|test-db)\.php$ [NC]
-RewriteRule ^ - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
