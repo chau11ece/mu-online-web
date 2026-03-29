@@ -59,40 +59,13 @@ echo "   PHP Version: " . phpversion() . "\n";
 echo "   Error Reporting: " . error_reporting() . "\n";
 echo "   Display Errors: " . ini_get('display_errors') . "\n\n";
 
-// Database connection test
-echo "6. Database Connection Test:\n";
-require_once('constants.php');
-echo "   HOST: " . HOST . "\n";
-echo "   DATABASE: " . WEB_DB . "\n";
-echo "   DRIVER: " . DRIVER . "\n";
-
-try {
-    if (DRIVER === 'pdo_dblib') {
-        $dsn = "dblib:host=" . HOST . ";dbname=" . WEB_DB;
-        $pdo = new PDO($dsn, USER, PASS, [
-            PDO::ATTR_TIMEOUT => 5,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
-        echo "   Status: ✓ CONNECTED\n";
-
-        $stmt = $pdo->query("SELECT @@VERSION as version");
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        echo "   SQL Server: " . substr($result['version'], 0, 50) . "...\n";
-    }
-} catch (PDOException $e) {
-    echo "   Status: ✗ FAILED\n";
-    echo "   Error: " . $e->getMessage() . "\n";
-}
-
-echo "\n7. Recent Database Error Log:\n";
+echo "6. Database Error Log (Today):\n";
 $dbLog = $logsDir . '/database_error_log_' . date('Y-m-d') . '.txt';
 if (file_exists($dbLog)) {
-    echo "   File: " . basename($dbLog) . "\n";
-    $lines = file($dbLog);
-    $recent = array_slice($lines, -10);
-    foreach ($recent as $line) {
-        echo "   " . trim($line) . "\n";
-    }
+    echo "   File: " . basename($dbLog) . "\n\n";
+    $content = file_get_contents($dbLog);
+    echo "   Content:\n";
+    echo "   " . str_replace("\n", "\n   ", trim($content)) . "\n";
 } else {
     echo "   No database error log for today\n";
 }
