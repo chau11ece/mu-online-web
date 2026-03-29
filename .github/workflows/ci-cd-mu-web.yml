@@ -58,6 +58,21 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
+    services:
+      mu-db-dev:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: Abcd@1234
+          MSSQL_PID: Express
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Abcd@1234' -C -Q 'SELECT 1' || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 20
+          --health-start-period 45s
     steps:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
