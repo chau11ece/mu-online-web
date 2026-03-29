@@ -35,4 +35,4 @@
 
     ob_end_flush();
 ?>
-<!-- CI/CD Test Deploy - 2026-03-29 03:34 UTC - GHCR_TOKEN for ansible-mu checkout -->
+<!-- CI/CD Test Deploy - 2026-03-29 03:42 UTC - ANSIBLE_VAULT_PASSWORD added -->
