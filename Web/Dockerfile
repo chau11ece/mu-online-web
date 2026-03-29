@@ -17,7 +17,11 @@ RUN apt-get update && apt-get install -y \
     freetds-bin \
     unixodbc \
     unixodbc-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install PHP extensions including PDO DBLIB for SQL Server
 # First configure and install GD, then install other extensions
@@ -44,6 +48,9 @@ WORKDIR /var/www/html
 
 # Copy existing application
 COPY . /var/www/html/
+
+# Install PHP dependencies with Composer
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
