@@ -27,8 +27,8 @@ RewriteRule ^(.*)$ index.php [L]
 RewriteCond %{REQUEST_URI} application.*
 RewriteRule ^(.*)$ index.php [L]
 
-# Exclude health.php and debug-logs.php from rewrite rules
-RewriteCond %{REQUEST_URI} ^/(health|debug-logs)\.php$ [NC]
+# Exclude debug and health endpoints from rewrite rules
+RewriteCond %{REQUEST_URI} ^/(health|debug-logs|test-db)\.php$ [NC]
 RewriteRule ^ - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
