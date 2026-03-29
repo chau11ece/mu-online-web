@@ -36,7 +36,7 @@ RUN docker-php-ext-install pdo_dblib
 
 # Install IonCube Loader for PHP 7.4
 RUN curl -Lo /tmp/ioncube_loader_lin_7.4.so https://downloads.ioncube.com/loader_downloads/ioncube_loader_lin_7.4.so \
-    && cp /tmp/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/ioncube_loader_lin_7.4.so \
+    && cp /tmp/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube_loader_lin_7.4.so \
     && echo "zend_extension=ioncube_loader_lin_7.4.so" > /usr/local/etc/php/conf.d/ioncube.ini \
     && rm -f /tmp/ioncube_loader_lin_7.4.so
 
