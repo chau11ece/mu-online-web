@@ -272,11 +272,12 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible deploy playbook
+        working-directory: ansible-mu
         run: |
           tag=${{ needs.push.outputs.image_tag }}
           echo "Deploying chaudevops/mu-web:$tag to danangmu.com..."
-          ansible-playbook ansible-mu/playbooks/deploy-mu.yml \
-            --inventory ansible-mu/inventory/hosts.ini \
+          ansible-playbook playbooks/deploy-mu.yml \
+            --inventory inventory/hosts.ini \
             --private-key /tmp/mu-deploy \
             --vault-password-file /tmp/vault-pass.txt \
             --extra-vars "mu_image=chaudevops/mu-web:$tag" \
