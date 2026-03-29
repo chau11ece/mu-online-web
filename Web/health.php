@@ -79,6 +79,7 @@ foreach ($checks as $key => $value) {
 $response = [
     'status' => $has_failures ? 'degraded' : 'ok',
     'timestamp' => date('c'),
+    'php' => phpversion(),
     'checks' => $checks
 ];
 
