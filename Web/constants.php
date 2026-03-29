@@ -17,10 +17,10 @@
 	 *
 	 */
 
-	define('HOST',		'mu-db-dev:1433');
-	define('USER',		'sa');
-	define('PASS',		'Abcd@1234');
-	define('WEB_DB',	'MuOnline');
+	define('HOST',		getenv('DB_HOST') ?: 'mu-db-dev:1433');
+	define('USER',		getenv('DB_USER') ?: 'sa');
+	define('PASS',		getenv('DB_PASS') ?: 'Abcd@1234');
+	define('WEB_DB',	getenv('DB_NAME') ?: 'MuOnline');
 	define('PAGE_START', microtime(true));
 	define('LOG_SQL',	false);
 	define('DRIVER', 	'pdo_dblib');
