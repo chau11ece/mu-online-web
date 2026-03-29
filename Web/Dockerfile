@@ -54,7 +54,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 /var/www/html/application/data \
-    && chmod -R 777 /var/www/html/application/config
+    && chmod -R 777 /var/www/html/application/config \
+    && chmod -R 777 /var/www/html/application/logs
 
 # Expose port 80
 EXPOSE 80
