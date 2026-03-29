@@ -270,6 +270,8 @@ jobs:
           chmod 600 /tmp/mu-deploy
           # Verify key format
           head -1 /tmp/mu-deploy
+          # Verify key is valid
+          ssh-keygen -l -f /tmp/mu-deploy || echo "Key format issue"
         env:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
