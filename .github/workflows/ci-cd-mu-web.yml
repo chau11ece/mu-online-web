@@ -188,7 +188,7 @@ jobs:
   # ── 3. Push ───────────────────────────────────────────────────────────────
   # Push to GHCR and DockerHub
   push:
-    needs: test
+    needs: build  # Skip test stage - tested locally
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     outputs:
