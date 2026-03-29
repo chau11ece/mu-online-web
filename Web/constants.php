@@ -5,7 +5,7 @@
 	define('BASEDIR',		realpath(dirname(__FILE__)).DS);
 	define('SYSTEM_PATH',	BASEDIR.'system');
 	define('APP_PATH',		BASEDIR.'application');
-	define('INSTALLED',		true);
+	define('INSTALLED',		false);  // Set to false to enable setup
 
 
 	/*

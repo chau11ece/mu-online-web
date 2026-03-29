@@ -3,7 +3,7 @@ RewriteEngine On
 ServerSignature Off
 
 # Exclude debug and health endpoints FIRST (before any other rules)
-RewriteCond %{REQUEST_URI} ^/(health|debug-logs|test-db)\.php$ [NC]
+RewriteCond %{REQUEST_URI} ^/(health|debug-logs|test-db|remove-lock)\.php$ [NC]
 RewriteRule ^ - [L]
 
 RewriteRule ^news/(.*)/([0-9]+)\/?$ home/read-news/$1/$2 [NC,L]
