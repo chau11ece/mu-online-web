@@ -14,6 +14,7 @@
                         <div class="form">
                             <form method="post" action="<?php echo $this->config->base_url; ?>registration"
                                   id="registration_form">
+                                <?php $this->csrf->writeToken(); ?>
                                 <table>
                                     <?php if($this->website->is_multiple_accounts() == true): ?>
                                         <tr>
@@ -40,22 +41,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px;"><?php echo __('Nickname'); ?>:</td>
+                                        <td style="width: 150px;"><?php echo __('Email'); ?>:</td>
                                         <td>
-                                            <input class="validate[required,minSize[<?php echo $config['min_username']; ?>],maxSize[<?php echo $config['max_username']; ?>]]"
-                                                   type="text" name="nick" id="nick" value=""/>
+                                            <input class="validate[required,custom[email],maxSize[50]]" type="text"
+                                                   name="email" id="email"
+                                                   value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8') : ''; ?>"/>
                                         </td>
                                     </tr>
-                                    <?php if($config['req_email'] == 1): ?>
-                                        <tr>
-                                            <td><?php echo __('Email'); ?>:</td>
-                                            <td>
-                                                <input class="validate[required,custom[email],maxSize[50]]" type="text"
-                                                       name="email" id="email"
-                                                       value="<?php echo isset($_GET['email']) ? $_GET['email'] : ''; ?>"/>
-                                            </td>
-                                        </tr>
-                                    <?php endif; ?>
+                                    <tr>
+                                        <td style="width: 150px;"><?php echo __('Password'); ?>:</td>
+                                        <td>
+                                            <input class="validate[required,minSize[<?php echo $config['min_password']; ?>],maxSize[<?php echo $config['max_password']; ?>]]"
+                                                   type="password" name="pass" id="pass" value=""/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px;"><?php echo __('Repeat Password'); ?>:</td>
+                                        <td>
+                                            <input class="validate[required,minSize[<?php echo $config['min_password']; ?>],maxSize[<?php echo $config['max_password']; ?>],equals[pass]]"
+                                                   type="password" name="rpass" id="rpass" value=""/>
+                                        </td>
+                                    </tr>
                                     <?php if($config['req_secret'] == 1): ?>
                                         <tr>
                                             <td><?php echo __('Secret Questions'); ?>:</td>
@@ -76,22 +82,6 @@
                                             <td>
                                                 <input class="validate[required,minSize[4],maxSize[50]]" type="text"
                                                        name="fpas_answ" id="fpas_answ" value=""/>
-                                            </td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    <?php if($config['email_validation'] == 0 || $config['generate_password'] == 0): ?>
-                                        <tr>
-                                            <td><?php echo __('Password'); ?>:</td>
-                                            <td>
-                                                <input class="validate[required,minSize[<?php echo $config['min_password']; ?>],maxSize[<?php echo $config['max_password']; ?>]]"
-                                                       type="password" name="pass" id="pass" value=""/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><?php echo __('Repeat Password'); ?>:</td>
-                                            <td>
-                                                <input class="validate[required,minSize[<?php echo $config['min_password']; ?>],maxSize[<?php echo $config['max_password']; ?>],equals[pass]]"
-                                                       type="password" name="rpass" id="rpass" value=""/>
                                             </td>
                                         </tr>
                                     <?php endif; ?>
@@ -117,6 +107,15 @@
                                             <td><?php echo __('Security'); ?>:</td>
                                             <td>
                                                 <div class="QapTcha"></div>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if(isset($security_config['captcha_type']) && $security_config['captcha_type'] == 2 && isset($math_captcha_question)): ?>
+                                        <tr>
+                                            <td><?php echo __('Security'); ?>:</td>
+                                            <td>
+                                                <label><?php echo htmlspecialchars($math_captcha_question, ENT_QUOTES, 'UTF-8'); ?></label>
+                                                <input class="validate[required]" type="text" name="captcha_answer" id="captcha_answer" value="" autocomplete="off" style="width:80px;"/>
                                             </td>
                                         </tr>
                                     <?php endif; ?>

@@ -6,8 +6,16 @@
         <div class="entry">
             <?php
                 if($this->session->userdata(['user' => 'logged_in'])):
-                    $credits = $this->website->get_user_credits_balance($this->session->userdata(['user' => 'username']), $this->session->userdata(['user' => 'server']), 1, $this->session->userdata(['user' => 'id']));
-                    $credits2 = $this->website->get_user_credits_balance($this->session->userdata(['user' => 'username']), $this->session->userdata(['user' => 'server']), 2, $this->session->userdata(['user' => 'id']));
+                    try{
+                        $credits = $this->website->get_user_credits_balance($this->session->userdata(['user' => 'username']), $this->session->userdata(['user' => 'server']), 1, $this->session->userdata(['user' => 'id']));
+                    } catch(Exception $e){
+                        $credits = ['credits' => 0];
+                    }
+                    try{
+                        $credits2 = $this->website->get_user_credits_balance($this->session->userdata(['user' => 'username']), $this->session->userdata(['user' => 'server']), 2, $this->session->userdata(['user' => 'id']));
+                    } catch(Exception $e){
+                        $credits2 = ['credits' => 0];
+                    }
                     ?>
                     <ul class="style4">
                         <li class="first" style="text-align: center;"><?php echo __('Welcome'); ?>

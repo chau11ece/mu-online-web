@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <main_conf>
   <main>
-    <servername>FireStarMu S9</servername>
-    <site_url>http://firestarmu.co.uk</site_url>
+    <servername>Mu Da Nang</servername>
+    <site_url>http://localhost:8080/</site_url>
     <forum_url>https://discord.gg/jpzC3FuXd4</forum_url>
     <con_check>1</con_check>
     <template>season6</template>
-    <timezone>UTC</timezone>
+    <timezone>Asia/Hong_Kong</timezone>
     <cache_type>file</cache_type>
     <mem_cached_ip/>
     <mem_cached_port/>

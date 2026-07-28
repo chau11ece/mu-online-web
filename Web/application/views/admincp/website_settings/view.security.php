@@ -35,6 +35,10 @@
                                         echo 'selected="selected"';
                                     } ?>>JS Captcha
                                     </option>
+                                    <option value="2" <?php if(isset($security_config['captcha_type']) && $security_config['captcha_type'] == 2){
+                                        echo 'selected="selected"';
+                                    } ?>>Math Captcha
+                                    </option>
                                     <option value="3" <?php if(isset($security_config['captcha_type']) && $security_config['captcha_type'] == 3){
                                         echo 'selected="selected"';
                                     } ?>>ReCaptcha v2

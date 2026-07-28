@@ -9,10 +9,6 @@
         public $error = false, $vars = [];
         private $logs = [];
 
-        public function __contruct()
-        {
-            parent::__construct();
-        }
 
         public function __set($key, $val)
         {
@@ -40,6 +36,7 @@
 
         public function test_password_strength($password, $len = [3, 10], $requirements = false)
         {
+            $this->vars['errors'] = [];
             if(strlen($password) < $len[0]){
                 $this->vars['errors'][] = sprintf(__('The password you entered is too short. Minimum length %d'), $len[0]);
             }
@@ -137,14 +134,21 @@
 
         public function prepare_account($req_email = 1, $req_secret = 0)
         {
-            $this->activation_code = strtoupper(sha1(microtime()));
+            $this->activation_code = bin2hex(random_bytes(20));
             if($this->activation == 1){
-                if($this->send_activation_email()){
-                    return $this->create_account($req_email, $req_secret);
+                // If activation is required but no email is provided, skip activation and create account directly
+                if(!isset($this->vars['email']) || $this->vars['email'] == ''){
+                    if($this->create_account($req_email, $req_secret)){
+                        return true;
+                    }
+                } else{
+                    if($this->send_activation_email()){
+                        return $this->create_account($req_email, $req_secret);
+                    }
                 }
             } else{
                 if($this->create_account($req_email, $req_secret)){
-                    if($this->config->values('email_config', 'welcome_email') == 1 && $req_email == 1){
+                    if($this->config->values('email_config', 'welcome_email') == 1 && $req_email == 1 && isset($this->vars['email']) && $this->vars['email'] != ''){
                         $this->send_welcome_email($this->vars['user'], $this->vars['email']);
                     }
                     return true;
@@ -225,10 +229,12 @@
 
         protected function send_activation_email()
         {
+            if(!isset($this->vars['email']) || $this->vars['email'] == ''){
+                return false;
+            }
             $body = @file_get_contents(APP_PATH . DS . 'data' . DS . 'email_patterns' . DS . 'reg_email_pattern.html');
             $body = str_replace('###USERNAME###', $this->vars['user'], $body);
             $body = str_replace('###SERVERNAME###', $this->config->config_entry('main|servername'), $body);
-            $body = str_replace('###PASSWORD###', $this->vars['pass'], $body);
             if($this->website->is_multiple_accounts() == true){
                 $body = str_replace('###ACTIVATIONURL###', $this->config->base_url . 'registration/activation/' . $this->activation_code . '/' . $this->vars['server'], $body);
             } else{
@@ -242,12 +248,11 @@
             }
         }
 
-        public function resend_activation_email($email, $user, $pwd, $server = '', $code)
+        public function resend_activation_email($email, $user, $server = '', $code)
         {
             $body = @file_get_contents(APP_PATH . DS . 'data' . DS . 'email_patterns' . DS . 'reg_email_pattern_resend_activation.html');
             $body = str_replace('###USERNAME###', $user, $body);
             $body = str_replace('###SERVERNAME###', $this->config->config_entry('main|servername'), $body);
-            $body = (MD5 == 0) ? str_replace('###PASSWORD###', 'Password: ' . $pwd, $body) : str_replace('###PASSWORD###', '<br />', $body);
             if($this->website->is_multiple_accounts() == true){
                 $body = str_replace('###ACTIVATIONURL###', $this->config->base_url . 'registration/activation/' . $code . '/' . $server, $body);
             } else{
@@ -351,9 +356,21 @@
 
         public function check_activation_code($code)
         {
-            $stmt = $this->account_db->prepare('SELECT memb___id, mail_addr, activated FROM MEMB_INFO WHERE activation_id = :code');
+            $stmt = $this->account_db->prepare('SELECT memb___id, mail_addr, activated, appl_days FROM MEMB_INFO WHERE activation_id = :code');
             $stmt->execute([':code' => $code]);
-            return $stmt->fetch();
+            $result = $stmt->fetch();
+            if($result && $result['activated'] != 1){
+                $appl_days = $result['appl_days'];
+                if($appl_days instanceof \DateTime){
+                    $created_time = $appl_days->getTimestamp();
+                } else{
+                    $created_time = is_numeric($appl_days) ? (int)$appl_days : strtotime($appl_days);
+                }
+                if(time() - $created_time > 86400){
+                    $result['expired'] = true;
+                }
+            }
+            return $result;
         }
 
         public function activate_account($acc, $code)
@@ -391,7 +408,7 @@
 
         public function create_reminder_entry_for_name($name)
         {
-            $code = strtoupper(sha1(microtime()));
+            $code = bin2hex(random_bytes(20));
             $data = [];
             $data[] = ['field' => 'invt_code', 'value' => $code, 'type' => 's'];
             $data[] = ['field' => 'assignto', 'value' => $name, 'type' => 's'];
@@ -1412,7 +1429,7 @@
         public function create_email_confirmation_entry($old = 1)
         {
             $old = ($old == 1) ? 1 : 0;
-            $this->activation_code = strtoupper(sha1(microtime()));
+            $this->activation_code = bin2hex(random_bytes(20));
             $prepare = $this->website->db('web')->prepare('INSERT INTO DmN_Email_Confirmation (account, email, code, old_email) VALUES (:account, :email, :code, :old_email)');
             return $prepare->execute([':account' => $this->website->c($this->session->userdata(['user' => 'username'])), ':email' => $this->website->c($this->vars['email']), ':code' => $this->activation_code, ':old_email' => $old]);
         }

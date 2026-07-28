@@ -28,6 +28,7 @@
                             ?>
                             <div class="form">
                                 <form method="post" action="" id="resend_activation_form" name="resend_activation_form">
+                                    <?php $this->csrf->writeToken(); ?>
                                     <table>
                                         <?php if($this->website->is_multiple_accounts() == true): ?>
                                             <tr>
@@ -59,6 +60,15 @@
                                                 <td><?php echo __('Security'); ?>:</td>
                                                 <td>
                                                     <div class="QapTcha"></div>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                        <?php if(isset($security_config['captcha_type']) && $security_config['captcha_type'] == 2 && isset($math_captcha_question)): ?>
+                                            <tr>
+                                                <td><?php echo __('Security'); ?>:</td>
+                                                <td>
+                                                    <label><?php echo htmlspecialchars($math_captcha_question, ENT_QUOTES, 'UTF-8'); ?></label>
+                                                    <input class="validate[required]" type="text" name="captcha_answer" id="captcha_answer" value="" autocomplete="off" style="width:80px;"/>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>

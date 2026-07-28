@@ -3,7 +3,7 @@
     "mail_mode": 0,
     "smtp_server": "smtp.resend.com",
     "smtp_port": 587,
-    "smtp_username": "apikey",
+    "smtp_username": "resend",
     "smtp_password": "re_6g61Xw4o_Pis1zrcG26aEEL8Zr6TR6Kbf",
     "smtp_auth": 1,
     "smtp_use_ssl": 2,

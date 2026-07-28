@@ -2,60 +2,60 @@
     "DEFAULT": {
         "resets": {
             "db": "game",
-            "table": "character",
+            "table": "Character",
             "column": "resets",
             "identifier_column": "Name"
         },
         "grand_resets": {
             "db": "game",
-            "table": "character",
+            "table": "Character",
             "column": "grand_resets",
             "identifier_column": "Name"
         },
         "wcoins": {
-            "db": "account",
-            "table": "T_InGameShop_Point",
-            "column": "WcoinC",
+            "db": "game",
+            "table": "CashShopData",
+            "column": "WCoinC",
             "identifier_column": "AccountID"
         },
         "master_level": {
             "db": "game",
-            "table": "character",
-            "column": "mLevel",
+            "table": "MasterSkillTree",
+            "column": "MasterLevel",
             "identifier_column": "Name"
         },
         "bc": {
             "db": "custom",
-            "table": "",
-            "column": "",
-            "identifier_column": ""
+            "table": "RankingBloodCastle",
+            "column": "Score",
+            "identifier_column": "Name"
         },
         "ds": {
             "db": "custom",
-            "table": "",
-            "column": "",
-            "identifier_column": ""
+            "table": "RankingDevilSquare",
+            "column": "Score",
+            "identifier_column": "Name"
         },
         "cc": {
             "db": "custom",
-            "table": "",
-            "column": "",
-            "identifier_column": "",
+            "table": "RankingChaosCastle",
+            "column": "Score",
+            "identifier_column": "Name",
             "column2": "",
             "column3": ""
         },
         "cs": {
             "db": "custom",
-            "table": "",
-            "column": "",
-            "identifier_column": ""
+            "table": "RankingCastleSiege",
+            "column": "KillScore",
+            "identifier_column": "Name"
         },
         "duels": {
             "db": "custom",
-            "table": "",
-            "column": "",
-            "identifier_column": "",
-            "column2": ""
+            "table": "RankingDuel",
+            "column": "WinScore",
+            "identifier_column": "Name",
+            "column2": "LoseScore"
         }
     }
 }

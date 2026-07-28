@@ -21,7 +21,7 @@
 
         public function isTokenValid($userToken)
         {
-            return ($userToken === $this->setToken());
+            return hash_equals($this->setToken(), $userToken);
         }
 
         public function writeToken()
@@ -44,7 +44,6 @@
          */
         public function verifyToken($type = 'post', $etype = 'exception', $timespan = null, $multiple = false)
         {
-            return true;
             $type = ($type == 'post') ? $_POST : $_GET;
             if(isset($type[$this->tokenName])){
                 if(!$this->isTokenValid($type[$this->tokenName])){
@@ -98,7 +97,7 @@
         {
             $agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'empty';
             $extra = sha1(ip() . $agent . $this->config->base_url);
-            $substring_start = rand(0, 9);
+            $substring_start = random_int(0, 9);
             // time() is used for token expiration
             $this->token = base64_encode($substring_start . time() . $this->randomStr($substring_start) . $extra . $this->randomStr(20));
         }
@@ -122,7 +121,7 @@
             $keys = array_merge(range(0, 9), range('a', 'z'));
             $key = "";
             for($i = 0; $i < $length; $i++){
-                $key .= $keys[mt_rand(0, count($keys) - 1)];
+                $key .= $keys[random_int(0, count($keys) - 1)];
             }
             return $key;
         }
