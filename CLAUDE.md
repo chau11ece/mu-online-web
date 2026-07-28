@@ -17,8 +17,8 @@ Rules in this file override hub rules only for this project. All hub rules apply
 
 **Project:** Mu Online Web — the account/shop/wcoin website for a private Mu Online game server business (danangmu.com)
 **Role:** Real revenue-generating product, NOT a training mock — see hub's `memory/project_goals.md` (Goal 2). Treat production risk (real players, real payments, real DDoS exposure) accordingly.
-**Governing DOP:** none written yet — run `/write-dop` (or `/start-discovery` for the fuller DOP+IRDs+sprint-plan treatment) before further feature work
-**Governing IRDs:** none yet
+**Governing DOP:** [DOP-28 — Mu Online Web](https://app.notion.com/p/DOP-Mu-Online-Web-3abdde5fafa981db88aac8e98955bc75)
+**Governing IRDs:** [IRD-27 — Mu Online Web: Deployment and Secrets Standards](https://app.notion.com/p/IRD-Mu-Online-Web-Deployment-and-Secrets-Standards-3abdde5fafa9819ca588fda3f984fe97)
 **Predecessor state:** this codebase and its CI/CD/Ansible/Terraform tooling in the sibling `CPPProjects/` folder were built before the hub agent workflow existed — see hub's `memory/project_mu_online_web_state.md` for the full audit (unfinished deploy history, license considerations, etc.)
 
 ---
@@ -82,9 +82,10 @@ From `skills-ledger.md`, directly relevant here:
 
 | Task | Status | Artifact | Date |
 |------|--------|----------|------|
-| Repo cleanup (untrack runtime data, remove dead files/obsolete kfc agent scaffolding, consolidate stale docs) | ✅ | this repo, commits `571610d` + follow-up | 2026-07-28 |
+| Repo cleanup (untrack runtime data, remove dead files/obsolete kfc agent scaffolding, consolidate stale docs) | ✅ | this repo, commits `571610d` + `e32ff7f` | 2026-07-28 |
 | Hub context import (this file) | ✅ | `CLAUDE.md` | 2026-07-28 |
-| DOP/IRD for this project | ⬜ | - | - |
+| DOP/IRD for this project | ✅ | DOP-28 + IRD-27 in Notion (linked above) | 2026-07-28 |
+| FR-1..4 / ACs from DOP-28 | ⬜ | - | - |
 
 ---
 
