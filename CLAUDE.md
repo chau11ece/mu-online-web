@@ -85,6 +85,7 @@ From `skills-ledger.md`, directly relevant here:
 | Repo cleanup (untrack runtime data, remove dead files/obsolete kfc agent scaffolding, consolidate stale docs) | ✅ | this repo, commits `571610d` + `e32ff7f` | 2026-07-28 |
 | Hub context import (this file) | ✅ | `CLAUDE.md` | 2026-07-28 |
 | DOP/IRD for this project | ✅ | DOP-28 + IRD-27 in Notion (linked above) | 2026-07-28 |
+| Full hub command/skill set copied (`/start-session`, `/report`, `/save-skill`, `!hub-sync`, `!scope-pivot`, `/start-discovery`, `/create-milestone`, `/milestone-report`, `/cost-check` + all 11 hub skills) | ✅ | `.claude/commands/`, `.claude/skills/`, commit `c01ccd9` | 2026-07-28 |
 | FR-1..4 / ACs from DOP-28 | ⬜ | - | - |
 
 ---
