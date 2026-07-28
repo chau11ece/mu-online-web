@@ -11,3 +11,8 @@ __pycache__/
 node_modules/
 .DS_Store
 vendor/
+
+# Runtime data — never commit (was previously tracked, purged 2026-07-28)
+Web/application/data/sessions/
+Web/application/data/cache/
+Web/application/logs/
