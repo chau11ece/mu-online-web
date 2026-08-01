@@ -87,6 +87,11 @@ From `skills-ledger.md`, directly relevant here:
 | DOP/IRD for this project | ✅ | DOP-28 + IRD-27 in Notion (linked above) | 2026-07-28 |
 | Full hub command/skill set copied (`/start-session`, `/report`, `/save-skill`, `!hub-sync`, `!scope-pivot`, `/start-discovery`, `/create-milestone`, `/milestone-report`, `/cost-check` + all 11 hub skills) | ✅ | `.claude/commands/`, `.claude/skills/`, commit `c01ccd9` | 2026-07-28 |
 | FR-1..4 / ACs from DOP-28 | ⬜ | - | - |
+| Infra scaling plan (DB → anti-DDoS/proxy → game farm → website order, cost-tier sizing) agreed | ✅ | hub memory `infra_scaling_plan.md` | 2026-08-01 |
+| Hardcoded prod MSSQL `sa` password removed from `ansible-mu` (was committed in plaintext, vault key itself was also tracked) | ✅ | `ansible-mu` commit `e3e47f1` | 2026-08-01 |
+| Verified actual prod state — all 3 droplets confirmed down (web app not running, MSSQL not listening, game server fully unreachable) | ✅ | this session | 2026-08-01 |
+| Update `ANSIBLE_VAULT_PASSWORD` GitHub secret on this repo to match rotated vault password | ⬜ | — blocks next CI deploy | - |
+| kfc agent scaffolding — actually delete untracked files (`571610d`/`e32ff7f` only untracked them, files still on disk) | ⬜ | `.claude/agents/kfc/`, `.claude/settings/kfc-settings.json`, `.claude/system-prompts/` | - |
 
 ---
 
