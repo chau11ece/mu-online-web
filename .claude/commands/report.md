@@ -5,6 +5,21 @@ daily log → memory → DOP ACs → skill gaps → commit all repos → trainer
 
 ---
 
+## Phase 0 — Check for a project-specific override
+
+Before Phase 1, check the current working directory's own `CLAUDE.md` for a project-specific session-closing convention (e.g. a "What Has Been Built" table, its own DOP/IRD numbering not tied to day-XX).
+
+**If found** (a real/non-mock project with its own tracking, not the day-XX training curriculum):
+- **Phase 1 (Daily Log)** → instead of `daily-logs/day-XX.md`, update the project's own tracking table/section in its `CLAUDE.md` with what was done this session
+- **Phase 3 (DOP ACs)** → there is no `program-standards/day-XX/`; instead sync whichever project-specific DOPs/IRDs were touched this session directly against their real Notion pages (create/update as needed, same Notion-sync requirement applies — a DOP/IRD only on GitHub is still invisible to anyone checking Notion)
+- **Phase 5 (AWS Cost Check)** → only run the AWS script if the session's actual cloud provider was AWS; skip silently otherwise (note the real provider used, if any, in the closing summary)
+- **Phase 6 "Trainer Report"** → there is no trainer on a real client/business project; produce a plain session summary instead (what changed, artifacts with paths, real blockers, next steps) — do not force the DOP-XX/trainer-specific format
+- Phases 2 (Memory), 4 (Skill Gap Check), and 6 "Commit All Repos" apply unchanged regardless of project type
+
+**If not found:** this is a training/curriculum-tracked session — run Phases 1-6 as written below.
+
+---
+
 ## Phase 1 — Daily Log
 
 Check `daily-logs/` for today's log (highest day number).

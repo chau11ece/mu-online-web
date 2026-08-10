@@ -6,6 +6,13 @@ Run this at the start of every session to restore full context and confirm what 
 
 ## Steps
 
+### 0. Check for a project-specific override
+
+Before doing anything else, check the current working directory's own `CLAUDE.md` for a **"Session Startup Routine"** section (or equivalently-named project-specific session-start convention).
+
+- **If found:** follow that routine instead of Steps 1-6 below. Project-specific routines exist precisely because not every project follows the day-XX training-curriculum structure (e.g. a real, non-mock production project with its own DOP/IRD numbering and its own "What Has Been Built" tracking table has no `daily-logs/` or `program-standards/day-XX/` to check). Do not force day-XX steps onto a project that has explicitly opted out of them.
+- **If not found:** this is a training/curriculum-tracked project — continue with Steps 1-6 as written.
+
 ### 1. Load context
 
 - Read the latest daily log from `daily-logs/` (highest day number)
