@@ -95,6 +95,14 @@ From `skills-ledger.md`, directly relevant here:
 | kfc agent scaffolding — actually delete untracked files (`571610d`/`e32ff7f` only untracked them, files still on disk) | ⬜ | `.claude/agents/kfc/`, `.claude/settings/kfc-settings.json`, `.claude/system-prompts/` | - |
 | DOP/IRD scaffold extended beyond the website — 3 more component pairs created (game server, shared DB, infra/hosting), closing the gap where only DOP-28/IRD-27 existed | ✅ | Notion: DOP+IRD for mu-online-server, mu-database, Infra Scaling and Hosting (all Draft) | 2026-08-01 |
 | Hardcoded MSSQL `sa` password fallback default in `ansible-mu/roles/mssql/defaults/main.yml` (survived the earlier `e3e47f1` fix as a silent fallback) removed, fail-loud assert added | ✅ | `ansible-mu` commit `4d374e6` | 2026-08-01 |
+| `main`/`develop` reconciled — discovered they had unrelated git histories (`develop` was rewritten at some point, `main` frozen since March); backed up old `main` as a tag, force-synced `main` to `develop` | ✅ | tag `main-backup-2026-03-29`, `main`/`develop` both at `5fe5f55` | 2026-08-09 |
+| Live Resend API key found already-published in git history on both branches (predates the CSRF refactor commit) — rotated at Resend, blanked from `email_config.json`, added `getenv('SMTP_PASSWORD')` override at all 4 `sendmail()` call sites | ✅ | commit `5fe5f55` | 2026-08-09 |
+| `GHCR_TOKEN` GitHub secret was an expired classic PAT, blocking the `push` job — regenerated and updated | ✅ | GitHub secret updated | 2026-08-09 |
+| First real CI/CD run since March: `build`/`push` now green; `deploy-production` fails at Ansible SSH — `mu-deploy` key rejected on the web droplet (`159.65.12.125`), matching a previously-flagged-but-unresolved "SSH host-key fingerprints changed" note | ⬜ | run `31279359200`, blocked | 2026-08-09 |
+| Infra Scaling IRD revised — adopt/extend the `terraform/infrastructure/` split-state variant (web/db/game each with independent state) instead of archiving it, after the shared-state model forced manual `-target` scoping during today's droplet recreation attempt | ✅ | Notion IRD-31 updated; hub memory `infra_scaling_plan.md` | 2026-08-09 |
+| New `mu-deploy` SSH keypair generated and registered in DO account's SSH Keys under the Terraform-expected name (`mu-deploy-key`) — replaces an orphaned/mismatched key | ✅ | scratchpad `mu-deploy-new(.pub)`, DO SSH key ID `58355243` | 2026-08-10 |
+| `doctl` installed and authenticated — but the authenticated DO API token sees **zero droplets/volumes** and only a `fra1` VPC, meaning it's scoped to a different account/team than the one running production (`sgp1`) — blocks the planned web-droplet recreation until resolved | ⬜ | — needs correct team/project token | 2026-08-10 |
+| `mu_db_user`/`mu_db_password` added to local `terraform.tfvars` (gitignored; reused the existing `ansible-mu` vault `sa` credential) | ✅ | local file only, not committed | 2026-08-10 |
 
 ---
 
