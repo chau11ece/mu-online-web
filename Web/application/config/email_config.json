@@ -4,7 +4,7 @@
     "smtp_server": "smtp.resend.com",
     "smtp_port": 587,
     "smtp_username": "resend",
-    "smtp_password": "re_6g61Xw4o_Pis1zrcG26aEEL8Zr6TR6Kbf",
+    "smtp_password": "",
     "smtp_auth": 1,
     "smtp_use_ssl": 2,
     "welcome_email": 1,

@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git restore *)",
+      "Bash(dig +short danangmu.com)",
+      "Bash(nslookup danangmu.com)",
+      "Bash(host danangmu.com)",
+      "Bash(getent hosts *)",
+      "Bash(curl -s -m 5 -o /dev/null -w \"network test \\(example.com\\): %{http_code}\\\\n\" https://example.com)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://raw.githubusercontent.com/chau11ece/ansible-mu/main/inventory/group_vars/dbservers.yml)",
+      "Bash(curl -s -m 5 https://api.github.com/repos/chau11ece/ansible-mu)",
+      "Bash(ansible --version)",
+      "Bash(ansible-vault encrypt *)",
+      "Bash(ansible-playbook playbooks/deploy-mssql.yml --syntax-check)",
+      "Bash(ansible-vault view *)",
+      "Bash(curl -s -m 10 -w \"\\\\nHTTP_CODE:%{http_code}\\\\n\" http://danangmu.com/health.php)",
+      "Bash(curl -sI -m 10 http://danangmu.com/)",
+      "Bash(dig +short danangmu.com A)",
+      "Bash(git -C /Users/mac/Desktop/CPPProjects/mu-online-web diff -- Web/constants.php)",
+      "Bash(rm -rf .claude/agents/kfc .claude/settings/kfc-settings.json .claude/system-prompts)",
+      "Bash(rmdir .claude/settings)",
+      "Bash(rmdir .claude/agents)",
+      "Bash(git status *)",
+      "mcp__claude_ai_Notion__notion-query-data-sources",
+      "Bash(ls -la /Users/mac/Desktop/CPPProjects/ 2>/dev/null; echo \"---\"; ls -la /Users/mac/Desktop/CPPProjects/mu-online-web/../ 2>/dev/null)",
+      "Read(//Users/mac/Desktop/CPPProjects//**)",
+      "Bash(python3 -c ' *)",
+      "Bash(echo \"exit_code=$?\")",
+      "Bash(git ls-remote *)",
+      "Bash(awk '{ n=length\\($0\\); print NR\": \"n\" chars\" }' models/model.donate.php)",
+      "Bash(git fetch *)",
+      "Bash(git config *)",
+      "Bash(ssh-keygen -t ed25519 -f /private/tmp/claude-501/-Users-mac-Desktop-CPPProjects-mu-online-web/1c90513a-8d64-478d-aaaf-e54e56e56bea/scratchpad/mu-deploy-new -N '' -C mu-deploy-ci-2026-08-09 -q)",
+      "Bash(ssh-keygen -l -f /private/tmp/claude-501/-Users-mac-Desktop-CPPProjects-mu-online-web/1c90513a-8d64-478d-aaaf-e54e56e56bea/scratchpad/mu-deploy-new.pub)",
+      "Bash(doctl account *)",
+      "Bash(doctl version *)",
+      "Bash(doctl compute *)",
+      "Bash(doctl vpcs *)"
+    ]
+  }
+}

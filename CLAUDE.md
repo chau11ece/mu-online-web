@@ -20,6 +20,7 @@ Rules in this file override hub rules only for this project. All hub rules apply
 **Governing DOP:** [DOP-28 — Mu Online Web](https://app.notion.com/p/DOP-Mu-Online-Web-3abdde5fafa981db88aac8e98955bc75)
 **Governing IRDs:** [IRD-27 — Mu Online Web: Deployment and Secrets Standards](https://app.notion.com/p/IRD-Mu-Online-Web-Deployment-and-Secrets-Standards-3abdde5fafa9819ca588fda3f984fe97)
 **Predecessor state:** this codebase and its CI/CD/Ansible/Terraform tooling in the sibling `CPPProjects/` folder were built before the hub agent workflow existed — see hub's `memory/project_mu_online_web_state.md` for the full audit (unfinished deploy history, license considerations, etc.)
+**Sibling component docs (2026-08-01):** the full danangmu.com launch spans 4 components, each with its own DOP+IRD in Notion — this repo (DOP-28/IRD-27), [mu-online-server](https://app.notion.com/p/3afdde5fafa981968677c9a16b38d3cf) ([IRD](https://app.notion.com/p/3afdde5fafa98147bc98f3242d087403)), [mu-database](https://app.notion.com/p/3afdde5fafa981348f8bf498cdf612db) ([IRD](https://app.notion.com/p/3afdde5fafa9815ca9ebf1b31abfb836)), and [Infra Scaling and Hosting](https://app.notion.com/p/3afdde5fafa981e29d23f9efa0934a37) ([IRD](https://app.notion.com/p/3afdde5fafa98144abcaf81709ef285b)) — all currently Draft. Those 3 sibling repos (`mu-online-server`, `ansible-mu`, `terraform`) have no `CLAUDE.md` of their own yet.
 
 ---
 
@@ -90,8 +91,10 @@ From `skills-ledger.md`, directly relevant here:
 | Infra scaling plan (DB → anti-DDoS/proxy → game farm → website order, cost-tier sizing) agreed | ✅ | hub memory `infra_scaling_plan.md` | 2026-08-01 |
 | Hardcoded prod MSSQL `sa` password removed from `ansible-mu` (was committed in plaintext, vault key itself was also tracked) | ✅ | `ansible-mu` commit `e3e47f1` | 2026-08-01 |
 | Verified actual prod state — all 3 droplets confirmed down (web app not running, MSSQL not listening, game server fully unreachable) | ✅ | this session | 2026-08-01 |
-| Update `ANSIBLE_VAULT_PASSWORD` GitHub secret on this repo to match rotated vault password | ⬜ | — blocks next CI deploy | - |
+| Update `ANSIBLE_VAULT_PASSWORD` GitHub secret on this repo to match rotated vault password | ✅ | GitHub secret updated from local `ansible-mu/vault/.vault_pass` (verified against `vault/secrets.yml` before pushing) | 2026-08-09 |
 | kfc agent scaffolding — actually delete untracked files (`571610d`/`e32ff7f` only untracked them, files still on disk) | ⬜ | `.claude/agents/kfc/`, `.claude/settings/kfc-settings.json`, `.claude/system-prompts/` | - |
+| DOP/IRD scaffold extended beyond the website — 3 more component pairs created (game server, shared DB, infra/hosting), closing the gap where only DOP-28/IRD-27 existed | ✅ | Notion: DOP+IRD for mu-online-server, mu-database, Infra Scaling and Hosting (all Draft) | 2026-08-01 |
+| Hardcoded MSSQL `sa` password fallback default in `ansible-mu/roles/mssql/defaults/main.yml` (survived the earlier `e3e47f1` fix as a silent fallback) removed, fail-loud assert added | ✅ | `ansible-mu` commit `4d374e6` | 2026-08-01 |
 
 ---
 

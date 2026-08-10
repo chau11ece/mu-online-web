@@ -288,6 +288,9 @@
         public function sendmail($recipients, $subject, $message, $from = [])
         {
             $this->vars['email_config'] = $this->config->values('email_config');
+            if(getenv('SMTP_PASSWORD')){
+                $this->vars['email_config']['smtp_password'] = getenv('SMTP_PASSWORD');
+            }
             if(!$this->vars['email_config'])
                 throw new Exception('Email settings not configured.');
             if(!isset($this->vars['email_config']['server_email']) || $this->vars['email_config']['server_email'] == '')
