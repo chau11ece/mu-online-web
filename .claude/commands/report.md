@@ -12,7 +12,7 @@ Before Phase 1, check the current working directory's own `CLAUDE.md` for a proj
 **If found** (a real/non-mock project with its own tracking, not the day-XX training curriculum):
 - **Phase 1 (Daily Log)** → instead of `daily-logs/day-XX.md`, update the project's own tracking table/section in its `CLAUDE.md` with what was done this session
 - **Phase 3 (DOP ACs)** → there is no `program-standards/day-XX/`; instead sync whichever project-specific DOPs/IRDs were touched this session directly against their real Notion pages (create/update as needed, same Notion-sync requirement applies — a DOP/IRD only on GitHub is still invisible to anyone checking Notion)
-- **Phase 5 (AWS Cost Check)** → only run the AWS script if the session's actual cloud provider was AWS; skip silently otherwise (note the real provider used, if any, in the closing summary)
+- **Phase 5 (Cloud Cost Check)** → run whichever provider script(s) actually apply (AWS and/or DigitalOcean); each self-skips via exit code 2 if that provider's credentials aren't present — note the real provider(s) used in the closing summary
 - **Phase 6 "Trainer Report"** → there is no trainer on a real client/business project; produce a plain session summary instead (what changed, artifacts with paths, real blockers, next steps) — do not force the DOP-XX/trainer-specific format
 - Phases 2 (Memory), 4 (Skill Gap Check), and 6 "Commit All Repos" apply unchanged regardless of project type
 
@@ -98,27 +98,32 @@ If no skill gaps found: skip this phase silently.
 
 ---
 
-## Phase 5 — AWS Cost Check
+## Phase 5 — Cloud Cost Check
 
-Run the cost audit script:
+Run BOTH provider audit scripts — each is self-contained and exits 2 silently if that provider's credentials/tools aren't present, so it's safe to always run both rather than trying to detect which provider a session used:
 
 ```bash
 bash /Users/mac/Desktop/chautv-proops2026/scripts/aws-cost-check.sh
+bash /Users/mac/Desktop/chautv-proops2026/scripts/do-cost-check.sh
 ```
 
-**If exit code is 2 (no credentials):** skip silently — session was not AWS-related.
+For each script, by its exit code:
 
-**If exit code is 0 (nothing running):** print `✅ AWS: no chargeable resources.` and continue.
+**Exit code 2 (no credentials/tools):** skip silently — session was not on that provider.
 
-**If exit code is 1 (resources found):** the script already printed the cost table and teardown plan.
+**Exit code 0 (nothing running):** print `✅ <Provider>: no chargeable resources.` and continue.
+
+**Exit code 1 (resources found):** the script already printed the ranked cost table and teardown plan.
 Then ask:
 
-> "AWS resources are still running. Tear down now?
+> "<Provider> resources are still running (~$X/mo if left running). Tear down now?
 > Options: **yes** (run teardown commands) / **no** (leave running) / **later** (save commands to teardown-now.sh)"
 
-- **yes** — execute each teardown command from the script output, one group at a time, confirming before destructive steps (eksctl delete cluster, rds delete-db-instance)
-- **no** — note in session summary: "⚠️ AWS resources left running — estimated cost: $X/h"
+- **yes** — execute each teardown command from the script output, one group at a time, confirming before destructive/irreversible steps (eksctl delete cluster, rds delete-db-instance, doctl databases delete, doctl compute droplet delete). If the resource is Terraform-managed, prefer `terraform destroy -target=<resource>` over calling the provider CLI directly, so state stays accurate.
+- **no** — note in session summary: "⚠️ <Provider> resources left running — estimated cost: $X/mo"
 - **later** — write the teardown commands to `/tmp/teardown-now.sh`, print the path
+
+If both scripts find chargeable resources, handle them as two separate yes/no/later decisions — don't force one answer to cover both providers.
 
 ---
 
